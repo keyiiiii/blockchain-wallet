@@ -76,7 +76,7 @@ export class AppContainer extends React.PureComponent<{}, {}> {
                  name="value"
                />
                <Button variant="contained" color="primary" onClick={this.postTransaction.bind(this)} type="submit">
-                 SUBMIT
+                 PAYMENT
                </Button>
              </form>
            </Grid>
