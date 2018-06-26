@@ -50,7 +50,7 @@ export class Balance extends React.PureComponent<{}, {}> {
                  name="address"
                />
                <Button variant="contained" color="primary" onClick={this.postTransaction.bind(this)} type="submit">
-                 SHOW
+                 SHOW BALANCE
                </Button>
              </form>
            </Grid>
