@@ -1,14 +1,39 @@
 import React from 'react';
-import { Button, Grid, TextField } from '@material-ui/core';
+import idx from 'idx';
+import { Button, Grid } from '@material-ui/core';
+import { connect } from 'react-redux';
+import { Field as ReduxField, reduxForm, FormErrors, InjectedFormProps } from 'redux-form';
+import { Dispatch } from 'redux';
+import { FormState, FormStateMap } from 'redux-form/lib/reducer';
+import { Field } from '../components/ui/Form/Field';
 import { apiUrl } from '../config';
 
-export class Account extends React.PureComponent<{}, {}> {
-  private seedForm: HTMLFormElement;
+interface SyncErrors {
+  syncErrors?: FormErrors<FormData>;
+}
+
+interface Props {
+  dispatch: Dispatch<any>;
+  account: FormState & SyncErrors;
+}
+
+interface State {
+  form: FormStateMap;
+}
+
+class CreateAccount extends React.PureComponent<
+  Props & InjectedFormProps<{}, Props>,
+  {}
+> {
+  private seedName = 'seed';
 
   postAccount(e: React.SyntheticEvent<{}>) {
     e.preventDefault();
-    const seedFormData = this.seedForm;
-    const seed = seedFormData.seed.value;
+    const { account } = this.props;
+    const seed = idx(
+      account,
+      (_: FormState) => _.values[this.seedName],
+    );
 
     fetch(`${apiUrl}/account`, {
       method: 'POST',
@@ -39,18 +64,13 @@ export class Account extends React.PureComponent<{}, {}> {
                noValidate
                autoComplete="off"
                style={{display: "block", width: "100%"}}
-               ref={(form: HTMLFormElement) => { this.seedForm = form } }
+               onSubmit={this.postAccount.bind(this)}
              >
-               <TextField
-                 id="full-width"
+               <ReduxField
                  label="Seed"
-                 InputLabelProps={{
-                   shrink: true,
-                 }}
                  placeholder="12345"
-                 fullWidth
-                 margin="normal"
-                 name="seed"
+                 name={this.seedName}
+                 component={Field}
                />
                <Button variant="contained" color="primary" onClick={this.postAccount.bind(this)} type="submit">
                  CREATE ADDRESS
@@ -62,3 +82,14 @@ export class Account extends React.PureComponent<{}, {}> {
     );
   }
 }
+
+const mapStateToProps = (state: State) => {
+  const { form: { account } } = state;
+  return { account };
+};
+
+const accountContainer = connect(mapStateToProps)(CreateAccount);
+
+export const AccountContainer = reduxForm({
+  form: 'account',
+})(accountContainer);
