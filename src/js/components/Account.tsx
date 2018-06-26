@@ -2,26 +2,27 @@ import React from 'react';
 import { Button, Grid, TextField } from '@material-ui/core';
 import { apiUrl } from '../config';
 
-export class Balance extends React.PureComponent<{}, {}> {
-  private balanceForm: HTMLFormElement;
+export class Account extends React.PureComponent<{}, {}> {
+  private seedForm: HTMLFormElement;
 
-  postTransaction(e: React.SyntheticEvent<{}>) {
+  postAccount(e: React.SyntheticEvent<{}>) {
     e.preventDefault();
-    const balanceFormData = this.balanceForm;
-    const address = balanceFormData.address.value;
+    const seedFormData = this.seedForm;
+    const seed = seedFormData.seed.value;
 
-    fetch(`${apiUrl}/account/${address}`, {
-      method: 'GET',
+    fetch(`${apiUrl}/account`, {
+      method: 'POST',
       headers: {
         'Content-Type': 'application/json',
       },
+      body: JSON.stringify({ seed }),
     })
       .then((result: any) => result.json())
       .then((account: {
-        balance: number;
+        address: string;
       }) => {
-        alert(`Account Balance: ${account.balance}.`);
-        console.log('result', account.balance);
+        alert(`Account Balance: ${account.address}`);
+        console.log('result', account.address);
       })
       .catch((err: Error) => {
         console.error(err);
@@ -33,26 +34,26 @@ export class Balance extends React.PureComponent<{}, {}> {
       <div>
         <div style={{ padding: 80 }}>
            <Grid container spacing={40}>
-             <h2>Account Balance</h2>
+             <h2>Sign up</h2>
              <form
                noValidate
                autoComplete="off"
                style={{display: "block", width: "100%"}}
-               ref={(form: HTMLFormElement) => { this.balanceForm = form } }
+               ref={(form: HTMLFormElement) => { this.seedForm = form } }
              >
                <TextField
                  id="full-width"
-                 label="Address"
+                 label="Seed"
                  InputLabelProps={{
                    shrink: true,
                  }}
-                 placeholder="1"
+                 placeholder="12345"
                  fullWidth
                  margin="normal"
-                 name="address"
+                 name="seed"
                />
-               <Button variant="contained" color="primary" onClick={this.postTransaction.bind(this)} type="submit">
-                 SHOW BALANCE
+               <Button variant="contained" color="primary" onClick={this.postAccount.bind(this)} type="submit">
+                 CREATE ADDRESS
                </Button>
              </form>
            </Grid>

@@ -8,6 +8,7 @@ export class Transfer extends React.PureComponent<{}, {}> {
   postTransaction(e: React.SyntheticEvent<{}>) {
     e.preventDefault();
     const transactionFormData = this.transactionForm;
+    const seed = transactionFormData.seed.value;
     const from = transactionFormData.from.value;
     const to = transactionFormData.to.value;
     const value = transactionFormData.value.value;
@@ -17,8 +18,9 @@ export class Transfer extends React.PureComponent<{}, {}> {
       headers: {
         'Content-Type': 'application/json',
       },
-      body: JSON.stringify({ from, to, value }),
+      body: JSON.stringify({ seed, from, to, value }),
     })
+      .then((result: any) => result.json())
       .then((result: any) => {
         console.log('result', result);
         confirm('送金しました');
@@ -44,11 +46,22 @@ export class Transfer extends React.PureComponent<{}, {}> {
           >
             <TextField
               id="full-width"
+              label="Seed"
+              InputLabelProps={{
+                shrink: true,
+              }}
+              placeholder="1234"
+              fullWidth
+              margin="normal"
+              name="seed"
+            />
+            <TextField
+              id="full-width"
               label="From"
               InputLabelProps={{
                 shrink: true,
               }}
-              placeholder="1"
+              placeholder="6b86b273ff34fce19d6b804eff5a3f5747ada4eaa22f1d49c01e52ddb7875b4b"
               fullWidth
               margin="normal"
               name="from"
@@ -59,7 +72,7 @@ export class Transfer extends React.PureComponent<{}, {}> {
               InputLabelProps={{
                 shrink: true,
               }}
-              placeholder="2"
+              placeholder="d4735e3a265e16eee03f59718b9b5d03019c07d8b6c51f90da3a666eec13ab35"
               fullWidth
               margin="normal"
               name="to"
