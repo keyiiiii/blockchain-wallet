@@ -6,7 +6,8 @@ import { Field as ReduxField, reduxForm, FormErrors, InjectedFormProps } from 'r
 import { Dispatch } from 'redux';
 import { FormState, FormStateMap } from 'redux-form/lib/reducer';
 import { Field } from '../components/ui/Form/Field';
-import { apiUrl } from '../config';
+import { postAccount } from '../actions/user';
+import { UserState } from "../reducers/user";
 
 interface SyncErrors {
   syncErrors?: FormErrors<FormData>;
@@ -15,10 +16,12 @@ interface SyncErrors {
 interface Props {
   dispatch: Dispatch<any>;
   account: FormState & SyncErrors;
+  address: FormState & SyncErrors;
 }
 
 interface State {
   form: FormStateMap;
+  user: UserState;
 }
 
 class CreateAccount extends React.PureComponent<
@@ -31,31 +34,23 @@ class CreateAccount extends React.PureComponent<
     this.postAccount = this.postAccount.bind(this);
   }
 
+  componentWillReceiveProps(nextProps: Props) {
+    const { address } = this.props;
+    const { address: nextAddress } = nextProps;
+    if (nextAddress !== address) {
+      alert(`Account Address: ${nextAddress}`);
+    }
+  }
+
   postAccount(e: React.SyntheticEvent<{}>) {
     e.preventDefault();
-    const { account } = this.props;
+    const { account, dispatch } = this.props;
     const seed = idx(
       account,
       (_: FormState) => _.values[this.seedName],
     );
 
-    fetch(`${apiUrl}/account`, {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify({ seed }),
-    })
-      .then((result: any) => result.json())
-      .then((account: {
-        address: string;
-      }) => {
-        alert(`Account Balance: ${account.address}`);
-        console.log('result', account.address);
-      })
-      .catch((err: Error) => {
-        console.error(err);
-      });
+    dispatch(postAccount(seed));
   }
 
   render() {
@@ -88,8 +83,8 @@ class CreateAccount extends React.PureComponent<
 }
 
 const mapStateToProps = (state: State) => {
-  const { form: { account } } = state;
-  return { account };
+  const { form: { account }, user: { account: { address } } } = state;
+  return { account, address };
 };
 
 const accountContainer = connect(mapStateToProps)(CreateAccount);

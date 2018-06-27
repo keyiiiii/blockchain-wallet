@@ -9,7 +9,7 @@ class Storage {
 
   private getStorage() {
     try {
-      return JSON.parse(this.storage.getItem(storageKeys.CABC));
+      return JSON.parse(this.storage.getItem(storageKeys.WALLET));
     } catch (e) {
       return null;
     }
@@ -17,7 +17,7 @@ class Storage {
 
   private setStorage(data: any) {
     try {
-      this.storage.setItem(storageKeys.CABC, JSON.stringify(data));
+      this.storage.setItem(storageKeys.WALLET, JSON.stringify(data));
       return true;
     } catch (e) {
       return false;
@@ -26,7 +26,7 @@ class Storage {
 
   private clearStorage() {
     try {
-      this.storage.removeItem(storageKeys.CABC);
+      this.storage.removeItem(storageKeys.WALLET);
       return true;
     } catch (e) {
       return false;
