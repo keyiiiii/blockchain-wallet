@@ -1,6 +1,6 @@
 import React from 'react';
 import { TransferContainer } from "./TransferContainer";
-import { Balance } from "../components/Balance";
+import { BalanceContainer } from "./BalanceContainer";
 import { AccountContainer } from "./AccountContainer";
 
 export class AppContainer extends React.PureComponent<{}, {}> {
@@ -9,7 +9,7 @@ export class AppContainer extends React.PureComponent<{}, {}> {
       <div>
         <AccountContainer />
         <TransferContainer />
-        <Balance />
+        <BalanceContainer />
       </div>
     );
   }
