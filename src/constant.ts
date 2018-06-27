@@ -1,4 +1,4 @@
-import keyMirror from 'keymirror';
+import * as keyMirror from 'keymirror';
 
 export const storageKeys = Object.freeze(
   keyMirror({

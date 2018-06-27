@@ -1,5 +1,41 @@
 {
+  "presets": [
+    "@babel/preset-typescript",
+    "@babel/preset-react",
+    [
+      // In this section, we should place only stage-4 or higher.
+      "@babel/preset-es2015",
+      {
+        "options": [
+          {
+            "modules": false
+          }
+        ]
+      }
+    ],
+    "@babel/preset-es2016",
+    "@babel/preset-es2017"
+  ],
+  "env": {
+    "test": {
+      "plugins": [
+        "dynamic-import-node"
+      ]
+    }
+  },
   "plugins": [
-    "syntax-object-rest-spread"
+    "@babel/plugin-syntax-dynamic-import",
+    "@babel/plugin-proposal-object-rest-spread",
+    "@babel/plugin-syntax-object-rest-spread",
+    "@babel/plugin-proposal-class-properties",
+    "@babel/plugin-syntax-class-properties",
+    [
+      "module-resolver",
+      {
+        "alias": {
+          "@": "./src"
+        }
+      }
+    ]
   ]
 }

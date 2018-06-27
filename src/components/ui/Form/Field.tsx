@@ -1,4 +1,4 @@
-import React from "react";
+import * as React from 'react';
 import { WrappedFieldProps } from 'redux-form/lib/Field';
 import { TextField } from '@material-ui/core';
 

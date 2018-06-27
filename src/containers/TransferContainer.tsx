@@ -1,4 +1,4 @@
-import React from 'react';
+import * as React from 'react';
 import idx from 'idx';
 import { Button, Grid } from '@material-ui/core';
 import { apiUrl } from '../config';

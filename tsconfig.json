@@ -8,7 +8,11 @@
     "noUnusedParameters": true,
     "noFallthroughCasesInSwitch": true,
     "removeComments": true,
-    "target": "ESNext"
+    "target": "ESNext",
+    "baseUrl": "./",
+    "paths": {
+      "@/*" : ["./src/*"]
+    }
   },
   "compileOnSave": false,
   "include": [

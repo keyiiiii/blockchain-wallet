@@ -1,4 +1,4 @@
-import React from 'react';
+import * as React from 'react';
 import { TransferContainer } from "./TransferContainer";
 import { BalanceContainer } from "./BalanceContainer";
 import { AccountContainer } from "./AccountContainer";
