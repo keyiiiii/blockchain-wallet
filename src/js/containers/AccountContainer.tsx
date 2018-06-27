@@ -27,6 +27,10 @@ class CreateAccount extends React.PureComponent<
 > {
   private seedName = 'seed';
 
+  componentDidMount() {
+    this.postAccount = this.postAccount.bind(this);
+  }
+
   postAccount(e: React.SyntheticEvent<{}>) {
     e.preventDefault();
     const { account } = this.props;
@@ -64,7 +68,7 @@ class CreateAccount extends React.PureComponent<
                noValidate
                autoComplete="off"
                style={{display: "block", width: "100%"}}
-               onSubmit={this.postAccount.bind(this)}
+               onSubmit={this.postAccount}
              >
                <ReduxField
                  label="Seed"
@@ -72,7 +76,7 @@ class CreateAccount extends React.PureComponent<
                  name={this.seedName}
                  component={Field}
                />
-               <Button variant="contained" color="primary" onClick={this.postAccount.bind(this)} type="submit">
+               <Button variant="contained" color="primary" onClick={this.postAccount} type="submit">
                  CREATE ADDRESS
                </Button>
              </form>

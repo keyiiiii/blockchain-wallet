@@ -1,5 +1,5 @@
 import React from 'react';
-import { Transfer } from "../components/Transfer";
+import { TransferContainer } from "./TransferContainer";
 import { Balance } from "../components/Balance";
 import { AccountContainer } from "./AccountContainer";
 
@@ -8,7 +8,7 @@ export class AppContainer extends React.PureComponent<{}, {}> {
     return (
       <div>
         <AccountContainer />
-        <Transfer />
+        <TransferContainer />
         <Balance />
       </div>
     );
