@@ -7,7 +7,12 @@
   <title>blockchain wallet</title>
 </head>
 <body>
-  <div id="app"></div>
+  <div id="app">
+    <strong>JavaScriptを有効にしてください</strong>
+  </div>
   <% for (var chunk in htmlWebpackPlugin.files.chunks) { %><script src="<%= htmlWebpackPlugin.files.chunks[chunk].entry %>" defer></script><% } %>
+  <script type="text/javascript">
+    document.getElementById("app").textContent = "";
+  </script>
 </body>
 </html>
