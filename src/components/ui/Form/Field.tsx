@@ -14,7 +14,7 @@ export const Field: React.SFC<Props & WrappedFieldProps> = ({
   name,
   input,
 }) => (
-  <div  {...input}>
+  <div {...input}>
     <TextField
       id="full-width"
       label={label}

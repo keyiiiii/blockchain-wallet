@@ -2,8 +2,13 @@ import * as React from 'react';
 import idx from 'idx';
 import { Button, Grid } from '@material-ui/core';
 import { apiUrl } from '../config';
-import { Dispatch } from "redux";
-import { Field as ReduxField, reduxForm, FormErrors, InjectedFormProps } from 'redux-form';
+import { Dispatch } from 'redux';
+import {
+  Field as ReduxField,
+  reduxForm,
+  FormErrors,
+  InjectedFormProps,
+} from 'redux-form';
 import { connect } from 'react-redux';
 import { Field } from '../components/ui/Form/Field';
 import { FormState, FormStateMap } from 'redux-form/lib/reducer';
@@ -38,22 +43,10 @@ class CreateTransfer extends React.PureComponent<
     e.preventDefault();
 
     const { transfer } = this.props;
-    const seed = idx(
-      transfer,
-      (_: FormState) => _.values[this.seedName],
-    );
-    const from = idx(
-      transfer,
-      (_: FormState) => _.values[this.fromName],
-    );
-    const to = idx(
-      transfer,
-      (_: FormState) => _.values[this.toName],
-    );
-    const value = idx(
-      transfer,
-      (_: FormState) => _.values[this.valueName],
-    );
+    const seed = idx(transfer, (_: FormState) => _.values[this.seedName]);
+    const from = idx(transfer, (_: FormState) => _.values[this.fromName]);
+    const to = idx(transfer, (_: FormState) => _.values[this.toName]);
+    const value = idx(transfer, (_: FormState) => _.values[this.valueName]);
 
     fetch(`${apiUrl}/transaction`, {
       method: 'POST',
@@ -75,13 +68,14 @@ class CreateTransfer extends React.PureComponent<
 
   render() {
     return (
-      <div style={{padding: 80}}>
+      <div style={{ padding: 80 }}>
+        {/* tslint:disable-next-line:no-magic-numbers */}
         <Grid container spacing={40}>
           <h2>Token Transfer</h2>
           <form
             noValidate
             autoComplete="off"
-            style={{display: "block", width: "100%"}}
+            style={{ display: 'block', width: '100%' }}
             onSubmit={this.postTransaction}
           >
             <ReduxField
@@ -108,7 +102,12 @@ class CreateTransfer extends React.PureComponent<
               name={this.valueName}
               component={Field}
             />
-            <Button variant="contained" color="primary" onClick={this.postTransaction} type="submit">
+            <Button
+              variant="contained"
+              color="primary"
+              onClick={this.postTransaction}
+              type="submit"
+            >
               PAYMENT
             </Button>
           </form>
@@ -119,7 +118,9 @@ class CreateTransfer extends React.PureComponent<
 }
 
 const mapStateToProps = (state: State) => {
-  const { form: { transfer } } = state;
+  const {
+    form: { transfer },
+  } = state;
   return { transfer };
 };
 
@@ -128,4 +129,3 @@ const transferContainer = connect(mapStateToProps)(CreateTransfer);
 export const TransferContainer = reduxForm({
   form: 'transfer',
 })(transferContainer);
-

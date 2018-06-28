@@ -10,7 +10,7 @@ const initialState = {
     token: localData.get(storageKeys.TOKEN) || '',
     account: {
       address: localData.get(storageKeys.ADDRESS) || '',
-    }
+    },
   },
 };
 

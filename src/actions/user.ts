@@ -8,10 +8,7 @@ export interface Account {
   address: string;
 }
 
-export const {
-  createAccount,
-  getToken,
-} = createActions({
+export const { createAccount, getToken } = createActions({
   [constant.CREATE_ACCOUNT]: (res: Account) => ({
     account: res,
   }),
@@ -34,7 +31,7 @@ export function postAccount(seed: string) {
       headers: {
         'Content-Type': 'application/json',
       },
-      body: JSON.stringify({seed}),
+      body: JSON.stringify({ seed }),
     })
       .then((result: any) => result.json())
       .then((account: Account) => {
