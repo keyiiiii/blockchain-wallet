@@ -36,10 +36,12 @@ class CreateWallet extends React.PureComponent<Props, {}> {
   }
 
   componentWillReceiveProps(nextProps: Props) {
+    const { dispatch, address } = nextProps;
     const nextBlockIndex = idx(nextProps.transaction, (_: any) => _.index);
     const blockIndex = idx(this.props.transaction, (_: any) => _.index);
     if (nextBlockIndex !== blockIndex) {
       confirm('送金しました');
+      dispatch(getBalance(address));
     }
   }
 
