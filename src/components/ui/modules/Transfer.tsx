@@ -1,7 +1,7 @@
 import * as React from 'react';
 import idx from 'idx';
 import { Button, Grid } from '@material-ui/core';
-import { apiUrl } from '../config';
+import { apiUrl } from '../../../config';
 import { Dispatch } from 'redux';
 import {
   Field as ReduxField,
@@ -10,7 +10,7 @@ import {
   InjectedFormProps,
 } from 'redux-form';
 import { connect } from 'react-redux';
-import { Field } from '../components/ui/Form/Field';
+import { Field } from '../Form/Field';
 import { FormState, FormStateMap } from 'redux-form/lib/reducer';
 
 interface SyncErrors {
@@ -124,8 +124,8 @@ const mapStateToProps = (state: State) => {
   return { transfer };
 };
 
-const transferContainer = connect(mapStateToProps)(CreateTransfer);
+const transfer = connect(mapStateToProps)(CreateTransfer);
 
-export const TransferContainer = reduxForm({
+export const Transfer = reduxForm({
   form: 'transfer',
-})(transferContainer);
+})(transfer);

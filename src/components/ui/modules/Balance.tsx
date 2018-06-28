@@ -10,8 +10,8 @@ import {
 } from 'redux-form';
 import { Dispatch } from 'redux';
 import { FormState, FormStateMap } from 'redux-form/lib/reducer';
-import { Field } from '../components/ui/Form/Field';
-import { apiUrl } from '../config';
+import { Field } from '../Form/Field';
+import { apiUrl } from '../../../config';
 
 interface SyncErrors {
   syncErrors?: FormErrors<FormData>;
@@ -100,8 +100,8 @@ const mapStateToProps = (state: State) => {
   return { balance };
 };
 
-const balanceContainer = connect(mapStateToProps)(CreateBalance);
+const balance = connect(mapStateToProps)(CreateBalance);
 
-export const BalanceContainer = reduxForm({
+export const Balance = reduxForm({
   form: 'balance',
-})(balanceContainer);
+})(balance);

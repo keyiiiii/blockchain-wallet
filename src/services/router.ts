@@ -43,6 +43,16 @@ const routes = [
     },
   },
   {
+    path: '/wallet',
+    async action(context: Context): Promise<Route> {
+      const { WalletContainer } = await import('../containers/WalletContainer');
+      return {
+        location: context,
+        Container: WalletContainer,
+      };
+    },
+  },
+  {
     path: '(.*)',
     async action(context: Context): Promise<Route> {
       const {
