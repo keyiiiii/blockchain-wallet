@@ -12,6 +12,7 @@ interface Props extends RouteProps {
   dispatch: Dispatch<any>;
   address: string;
   balance: string;
+  token: string;
 }
 
 interface State {
@@ -31,11 +32,11 @@ class CreateWallet extends React.PureComponent<Props, {}> {
   }
 
   render() {
-    const { balance } = this.props;
+    const { balance, address, token } = this.props;
     return (
       <div>
         <Balance balance={balance} />
-        <Transfer />
+        <Transfer address={address} token={token} />
       </div>
     );
   }
@@ -46,9 +47,10 @@ const mapStateToProps = (state: State) => {
     user: {
       account: { address },
       balance,
+      token,
     },
   } = state;
-  return { address, balance };
+  return { address, balance, token };
 };
 
 export const WalletContainer = connect(mapStateToProps)(CreateWallet);

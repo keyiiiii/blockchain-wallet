@@ -20,6 +20,8 @@ interface SyncErrors {
 interface Props {
   dispatch: Dispatch<any>;
   transfer: FormState & SyncErrors;
+  token: string;
+  address: string;
 }
 
 interface State {
@@ -30,8 +32,6 @@ class CreateTransfer extends React.PureComponent<
   Props & InjectedFormProps<{}, Props>,
   {}
 > {
-  private seedName = 'seed';
-  private fromName = 'from';
   private toName = 'to';
   private valueName = 'value';
 
@@ -41,10 +41,9 @@ class CreateTransfer extends React.PureComponent<
 
   postTransaction(e: React.SyntheticEvent<{}>) {
     e.preventDefault();
+    const { token: seed, address: from } = this.props;
 
     const { transfer } = this.props;
-    const seed = idx(transfer, (_: FormState) => _.values[this.seedName]);
-    const from = idx(transfer, (_: FormState) => _.values[this.fromName]);
     const to = idx(transfer, (_: FormState) => _.values[this.toName]);
     const value = idx(transfer, (_: FormState) => _.values[this.valueName]);
 
@@ -78,18 +77,6 @@ class CreateTransfer extends React.PureComponent<
             style={{ display: 'block', width: '100%' }}
             onSubmit={this.postTransaction}
           >
-            <ReduxField
-              label="Seed"
-              placeholder="1234"
-              name={this.seedName}
-              component={Field}
-            />
-            <ReduxField
-              label="From"
-              placeholder="6b86b273ff34fce19d6b804eff5a3f5747ada4eaa22f1d49c01e52ddb7875b4b"
-              name={this.fromName}
-              component={Field}
-            />
             <ReduxField
               label="To"
               placeholder="d4735e3a265e16eee03f59718b9b5d03019c07d8b6c51f90da3a666eec13ab35"
