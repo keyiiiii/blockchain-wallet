@@ -9,6 +9,7 @@ import { getBalance } from '../actions/user';
 import { Transfer } from '../components/ui/modules/Transfer';
 import { Balance } from '../components/ui/modules/Balance';
 import { TransactionState } from '../reducers/transaction';
+import { Address } from '../components/ui/modules/Address';
 
 interface Props extends RouteProps {
   dispatch: Dispatch<any>;
@@ -49,6 +50,7 @@ class CreateWallet extends React.PureComponent<Props, {}> {
     const { balance, address, token } = this.props;
     return (
       <div>
+        <Address address={address} />
         <Balance balance={balance} />
         <Transfer address={address} token={token} />
       </div>

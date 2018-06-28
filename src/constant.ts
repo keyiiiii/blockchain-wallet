@@ -20,5 +20,6 @@ export const api = Object.freeze(
     READ_TOKEN: null,
     READ_BALANCE: null,
     CREATE_TRANSACTION: null,
+    READ_CHAIN: null,
   }),
 );

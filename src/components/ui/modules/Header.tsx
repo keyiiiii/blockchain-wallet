@@ -15,13 +15,10 @@ const BLOCKCHAIN = '/blockchain';
 
 function getPathNumber(pathname: string): number {
   switch (pathname) {
-    case WALLET:
-      return 0;
     case BLOCKCHAIN:
       return 1;
     default:
-      // tslint:disable-next-line:no-magic-numbers
-      return 3;
+      return 0;
   }
 }
 

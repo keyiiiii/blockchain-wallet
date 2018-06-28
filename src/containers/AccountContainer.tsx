@@ -69,34 +69,32 @@ class CreateAccount extends React.PureComponent<
 
   render() {
     return (
-      <div>
-        <div style={{ padding: 80 }}>
-          {/* tslint:disable-next-line:no-magic-numbers */}
-          <Grid container spacing={40}>
-            <h2>Sign up</h2>
-            <form
-              noValidate
-              autoComplete="off"
-              style={{ display: 'block', width: '100%' }}
-              onSubmit={this.postAccount}
+      <div style={{ padding: 80 }}>
+        {/* tslint:disable-next-line:no-magic-numbers */}
+        <Grid container spacing={40}>
+          <h2>Sign up</h2>
+          <form
+            noValidate
+            autoComplete="off"
+            style={{ display: 'block', width: '100%' }}
+            onSubmit={this.postAccount}
+          >
+            <ReduxField
+              label="Seed"
+              placeholder="12345"
+              name={this.seedName}
+              component={Field}
+            />
+            <Button
+              variant="contained"
+              color="primary"
+              onClick={this.postAccount}
+              type="submit"
             >
-              <ReduxField
-                label="Seed"
-                placeholder="12345"
-                name={this.seedName}
-                component={Field}
-              />
-              <Button
-                variant="contained"
-                color="primary"
-                onClick={this.postAccount}
-                type="submit"
-              >
-                CREATE ADDRESS
-              </Button>
-            </form>
-          </Grid>
-        </div>
+              CREATE ADDRESS
+            </Button>
+          </form>
+        </Grid>
       </div>
     );
   }

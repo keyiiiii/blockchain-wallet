@@ -23,11 +23,6 @@ export interface Route {
   location: Context;
   Container: React.ComponentClass<Props> | DecoratedComponentClass<{}, {}>;
 }
-//
-// interface RedirectRoute {
-//   redirect: string;
-//   from: string;
-// }
 
 const routes = [
   {
@@ -49,6 +44,18 @@ const routes = [
       return {
         location: context,
         Container: WalletContainer,
+      };
+    },
+  },
+  {
+    path: '/blockchain',
+    async action(context: Context): Promise<Route> {
+      const {
+        BlockchainContainer,
+      } = await import('../containers/BlockchainContainer');
+      return {
+        location: context,
+        Container: BlockchainContainer,
       };
     },
   },
