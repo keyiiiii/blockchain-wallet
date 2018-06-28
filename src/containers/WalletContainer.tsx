@@ -1,4 +1,5 @@
 import * as React from 'react';
+import idx from 'idx';
 import { history } from '../router/history';
 import { connect } from 'react-redux';
 import { Dispatch } from 'redux';
@@ -7,16 +8,19 @@ import { Props as RouteProps } from '../services/router';
 import { getBalance } from '../actions/user';
 import { Transfer } from '../components/ui/modules/Transfer';
 import { Balance } from '../components/ui/modules/Balance';
+import { TransactionState } from '../reducers/transaction';
 
 interface Props extends RouteProps {
   dispatch: Dispatch<any>;
   address: string;
   balance: string;
   token: string;
+  transaction: any;
 }
 
 interface State {
   user: UserState;
+  transaction: TransactionState;
 }
 
 class CreateWallet extends React.PureComponent<Props, {}> {
@@ -29,6 +33,14 @@ class CreateWallet extends React.PureComponent<Props, {}> {
     }
 
     dispatch(getBalance(address));
+  }
+
+  componentWillReceiveProps(nextProps: Props) {
+    const nextBlockIndex = idx(nextProps.transaction, (_: any) => _.index);
+    const blockIndex = idx(this.props.transaction, (_: any) => _.index);
+    if (nextBlockIndex !== blockIndex) {
+      confirm('送金しました');
+    }
   }
 
   render() {
@@ -49,8 +61,9 @@ const mapStateToProps = (state: State) => {
       balance,
       token,
     },
+    transaction: { transaction },
   } = state;
-  return { address, balance, token };
+  return { address, balance, token, transaction };
 };
 
 export const WalletContainer = connect(mapStateToProps)(CreateWallet);
