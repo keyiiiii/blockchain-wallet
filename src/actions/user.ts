@@ -8,12 +8,15 @@ export interface Account {
   address: string;
 }
 
-export const { createAccount, getToken } = createActions({
+export const { createAccount, readToken, readBalance } = createActions({
   [constant.CREATE_ACCOUNT]: (res: Account) => ({
     account: res,
   }),
-  [constant.GET_TOKEN]: (res: string) => ({
+  [constant.READ_TOKEN]: (res: string) => ({
     token: res,
+  }),
+  [constant.READ_BALANCE]: (res: string) => ({
+    balance: res,
   }),
 });
 
@@ -36,8 +39,26 @@ export function postAccount(seed: string) {
       .then((result: any) => result.json())
       .then((account: Account) => {
         setToken2LocalData(seed, account);
-        dispatch(getToken(seed));
+        dispatch(readToken(seed));
         dispatch(createAccount(account));
+      })
+      .catch((err: Error) => {
+        console.error(err);
+      });
+  };
+}
+
+export function getBalance(address: string) {
+  return (dispatch: Dispatch<any>) => {
+    fetch(`${apiUrl}/balance/${address}`, {
+      method: 'GET',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+    })
+      .then((result: any) => result.json())
+      .then((balance: { balance: string }) => {
+        dispatch(readBalance(balance.balance));
       })
       .catch((err: Error) => {
         console.error(err);

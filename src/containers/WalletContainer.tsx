@@ -4,12 +4,14 @@ import { connect } from 'react-redux';
 import { Dispatch } from 'redux';
 import { UserState } from '../reducers/user';
 import { Props as RouteProps } from '../services/router';
+import { getBalance } from '../actions/user';
 import { Transfer } from '../components/ui/modules/Transfer';
 import { Balance } from '../components/ui/modules/Balance';
 
 interface Props extends RouteProps {
   dispatch: Dispatch<any>;
   address: string;
+  balance: string;
 }
 
 interface State {
@@ -18,18 +20,21 @@ interface State {
 
 class CreateWallet extends React.PureComponent<Props, {}> {
   componentWillMount() {
-    const { address } = this.props;
+    const { address, dispatch } = this.props;
     // TODO: ルータ側で判定する
     // TODO: 存在する address かどうかを確認する(要 blockchain 変更)
     if (!address) {
       history.push('/');
     }
+
+    dispatch(getBalance(address));
   }
 
   render() {
+    const { balance } = this.props;
     return (
       <div>
-        <Balance />
+        <Balance balance={balance} />
         <Transfer />
       </div>
     );
@@ -40,9 +45,10 @@ const mapStateToProps = (state: State) => {
   const {
     user: {
       account: { address },
+      balance,
     },
   } = state;
-  return { address };
+  return { address, balance };
 };
 
 export const WalletContainer = connect(mapStateToProps)(CreateWallet);

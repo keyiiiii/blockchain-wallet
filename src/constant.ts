@@ -17,6 +17,7 @@ export const storageKeys = Object.freeze(
 export const api = Object.freeze(
   keyMirror({
     CREATE_ACCOUNT: null,
-    GET_TOKEN: null,
+    READ_TOKEN: null,
+    READ_BALANCE: null,
   }),
 );
