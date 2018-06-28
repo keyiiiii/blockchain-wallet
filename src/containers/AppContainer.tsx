@@ -5,6 +5,7 @@ import { connect } from 'react-redux';
 import { changeRouter } from '../actions/router';
 import { history } from '../router/history';
 import { RouterState } from '../reducers/router';
+import { Header } from '../components/ui/modules/Header';
 
 interface Props {
   route: Route;
@@ -35,6 +36,7 @@ export class CreateAppContainer extends React.PureComponent<Props, {}> {
       const { Container, location } = route;
       return (
         <div>
+          <Header location={location} />
           <Container location={location} />
         </div>
       );
