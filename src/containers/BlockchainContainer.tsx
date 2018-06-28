@@ -22,9 +22,12 @@ class CreateBlockchain extends React.PureComponent<Props, {}> {
 
   render() {
     const { blockchain } = this.props;
+    if (!blockchain || !blockchain.length) {
+      return null;
+    }
     return (
       <div style={{ padding: 40 }}>
-        <pre>{JSON.stringify(blockchain, null, '\t')}</pre>
+        <pre>{JSON.stringify(blockchain.reverse(), null, '\t')}</pre>
       </div>
     );
   }
