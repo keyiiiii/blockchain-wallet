@@ -9,10 +9,7 @@
     "noFallthroughCasesInSwitch": true,
     "removeComments": true,
     "target": "ESNext",
-    "baseUrl": "./",
-    "paths": {
-      "@/*" : ["./src/*"]
-    }
+    "baseUrl": "./"
   },
   "compileOnSave": false,
   "include": [
