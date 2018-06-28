@@ -1,4 +1,5 @@
 import * as React from 'react';
+import { history } from '../router/history';
 import idx from 'idx';
 import { Button, Grid } from '@material-ui/core';
 import { connect } from 'react-redux';
@@ -36,6 +37,15 @@ class CreateAccount extends React.PureComponent<
 > {
   private seedName = 'seed';
 
+  componentWillMount() {
+    const { address } = this.props;
+    // TODO: ルータ側で判定する
+    // TODO: 存在する address かどうかを確認する(要 blockchain 変更)
+    if (address) {
+      history.push('/wallet');
+    }
+  }
+
   componentDidMount() {
     this.postAccount = this.postAccount.bind(this);
   }
@@ -45,6 +55,7 @@ class CreateAccount extends React.PureComponent<
     const { address: nextAddress } = nextProps;
     if (nextAddress !== address) {
       alert(`Account Address: ${nextAddress}`);
+      history.push('/wallet');
     }
   }
 
