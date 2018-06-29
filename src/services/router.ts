@@ -60,6 +60,18 @@ const routes = [
     },
   },
   {
+    path: '/tokens',
+    async action(context: Context): Promise<Route> {
+      const {
+        TokensContainer,
+      } = await import('../containers/TokensContainer');
+      return {
+        location: context,
+        Container: TokensContainer,
+      };
+    },
+  },
+  {
     path: '(.*)',
     async action(context: Context): Promise<Route> {
       const {
