@@ -36,7 +36,8 @@ const config = {
     port: 8080,
     historyApiFallback: true,
     inline: true,
-    publicPath: "/"
+    publicPath: '/',
+    host: '0.0.0.0'
   },
 
   plugins: [
