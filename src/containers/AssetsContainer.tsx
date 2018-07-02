@@ -72,14 +72,14 @@ class CreateAssets extends React.PureComponent<
   }
 
   componentWillReceiveProps(nextProps: Props) {
-    const { assets, balance } = nextProps;
+    const { assets } = nextProps;
     const form = getAssetsInfo(assets, this);
+    // TODO: Fee 1 Token
     if (
       form.name &&
       form.description &&
       form.total &&
-      form.decimals &&
-      balance
+      form.decimals
     ) {
       this.setState({
         isEnabled: true,
@@ -143,7 +143,6 @@ class CreateAssets extends React.PureComponent<
               type="number"
               required
             />
-            <p>Fee 1 Token</p>
             <Button
               variant="contained"
               color="primary"
