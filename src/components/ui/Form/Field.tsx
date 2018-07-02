@@ -13,6 +13,7 @@ export const Field: React.SFC<Props & WrappedFieldProps> = ({
   placeholder,
   name,
   input,
+  ...props
 }) => (
   <div {...input}>
     <TextField
@@ -25,6 +26,7 @@ export const Field: React.SFC<Props & WrappedFieldProps> = ({
       fullWidth
       margin="normal"
       name={name}
+      {...props}
     />
   </div>
 );

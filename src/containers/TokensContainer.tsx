@@ -7,19 +7,21 @@ import {
   reduxForm,
   InjectedFormProps,
 } from 'redux-form';
-import { FormStateMap } from 'redux-form/lib/reducer';
+import { FormStateMap, FormState } from 'redux-form/lib/reducer';
 import { Props as RouteProps } from '../services/router';
-import { Field } from "../components/ui/Form/Field";
-import { UserState } from "../reducers/user";
+import { Field } from '../components/ui/Form/Field';
+import { UserState } from '../reducers/user';
+import idx from 'idx';
 
 interface Props extends RouteProps {
   dispatch: Dispatch<any>;
-  blockchain: any;
+  tokens: any; // TODO: import action types
 }
 
 interface State {
   form: FormStateMap;
   user: UserState;
+  isDisabled: boolean;
 }
 
 class CreateTokens extends React.PureComponent<
@@ -31,24 +33,37 @@ class CreateTokens extends React.PureComponent<
   private assetTotalName = 'total';
   private assetDecimalsName = 'decimals';
 
+  state = {
+    isEnabled: false,
+  };
+
   componentDidMount() {
-    this.postAccount = this.postAccount.bind(this);
+    this.generateTokens = this.generateTokens.bind(this);
   }
 
-  postAccount(e: React.SyntheticEvent<{}>) {
+  generateTokens(e: React.SyntheticEvent<{}>) {
     e.preventDefault();
+    const { tokens } = this.props;
+    const assetName = idx(tokens, (_: FormState) => _.values[this.assetName]);
+    const description = idx(tokens, (_: FormState) => _.values[this.assetDescriptionName]);
+    const total = idx(tokens, (_: FormState) => _.values[this.assetTotalName]);
+    const decimals = idx(tokens, (_: FormState) => _.values[this.assetDecimalsName]);
+
+    console.warn({ assetName, description, total, decimals });
   }
 
   render() {
+    const { isEnabled } = this.state;
     return (
       <div style={{ padding: 80 }}>
+        {/* tslint:disable-next-line:no-magic-numbers */}
         <Grid container spacing={40}>
           <h2>Token Generation</h2>
           <form
             noValidate
             autoComplete="off"
-            style={{ display: "block", width: "100%" }}
-            onSubmit={this.postAccount}
+            style={{ display: 'block', width: '100%' }}
+            onSubmit={this.generateTokens}
           >
             <ReduxField
               label="Name of your asset"
@@ -66,20 +81,22 @@ class CreateTokens extends React.PureComponent<
               placeholder="100000000"
               name={this.assetTotalName}
               component={Field}
+              type="number"
             />
             <ReduxField
               label="Decimals"
               placeholder="From 0 to 8"
               name={this.assetDecimalsName}
               component={Field}
+              type="number"
             />
             <p>Fee 1 Token</p>
             <Button
               variant="contained"
               color="primary"
-              onClick={this.postAccount}
+              onClick={this.generateTokens}
               type="submit"
-              disabled
+              disabled={!isEnabled}
             >
               GENERATE
             </Button>
@@ -91,7 +108,10 @@ class CreateTokens extends React.PureComponent<
 }
 
 const mapStateToProps = (state: State) => {
-  return { state };
+  const {
+    form: { tokens },
+  } = state;
+  return { tokens };
 };
 
 const tokensContainer = connect(mapStateToProps)(CreateTokens);
