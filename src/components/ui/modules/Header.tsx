@@ -14,6 +14,7 @@ const WALLET = '/wallet';
 const BLOCKCHAIN = '/blockchain';
 const TOKEN_GENERATION = '/tokens';
 
+// tslint:disable:no-magic-numbers
 function getPathNumber(pathname: string): number {
   switch (pathname) {
     case BLOCKCHAIN:
@@ -24,6 +25,7 @@ function getPathNumber(pathname: string): number {
       return 0;
   }
 }
+// tslint:enable:no-magic-numbers
 
 class CreateHeader extends React.PureComponent<Props, {}> {
   customLink(to: string) {

@@ -14,7 +14,7 @@ import { Address } from '../components/ui/modules/Address';
 interface Props extends RouteProps {
   dispatch: Dispatch<any>;
   address: string;
-  balance: string;
+  balance: number;
   token: string;
   transaction: any;
 }

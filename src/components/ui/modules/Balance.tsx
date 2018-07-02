@@ -1,7 +1,7 @@
 import * as React from 'react';
 
 interface Props {
-  balance: string;
+  balance: number;
 }
 
 export const Balance: React.SFC<Props> = ({ balance }) => (
