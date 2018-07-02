@@ -3,6 +3,7 @@ import { history } from '../router/history';
 import idx from 'idx';
 import { Button, Grid } from '@material-ui/core';
 import { connect } from 'react-redux';
+import { generateMnemonic, mnemonicToSeedHex } from 'bip39';
 import {
   Field as ReduxField,
   reduxForm,
@@ -29,13 +30,18 @@ interface Props extends RouteProps {
 interface State {
   form: FormStateMap;
   user: UserState;
+  mnemonic: string;
 }
 
 class CreateAccount extends React.PureComponent<
   Props & InjectedFormProps<{}, Props>,
   {}
 > {
-  private seedName = 'seed';
+  private mnemonicName = 'mnemonic';
+
+  state = {
+    mnemonic: '',
+  };
 
   componentWillMount() {
     const { address } = this.props;
@@ -48,6 +54,7 @@ class CreateAccount extends React.PureComponent<
 
   componentDidMount() {
     this.postAccount = this.postAccount.bind(this);
+    this.generateMnemonic = this.generateMnemonic.bind(this);
   }
 
   componentWillReceiveProps(nextProps: Props) {
@@ -62,12 +69,46 @@ class CreateAccount extends React.PureComponent<
   postAccount(e: React.SyntheticEvent<{}>) {
     e.preventDefault();
     const { account, dispatch } = this.props;
-    const seed = idx(account, (_: FormState) => _.values[this.seedName]);
+    const mnemonic = idx(account, (_: FormState) => _.values[this.mnemonicName]);
 
-    dispatch(postAccount(seed));
+    if (mnemonic) {
+      const seed = mnemonicToSeedHex(mnemonic);
+      dispatch(postAccount(seed));
+    }
+
+  }
+
+  generateMnemonic() {
+    this.setState({
+      mnemonic: generateMnemonic(),
+    });
+  }
+
+  renderMnemonic() {
+    const { mnemonic } = this.state;
+    if (!mnemonic) {
+      return (
+        <Button
+          variant="contained"
+          color="primary"
+          onClick={this.generateMnemonic}
+          type="button"
+        >
+          GENERATE MNEMONIC
+        </Button>
+      )
+    }
+    return (
+      <div>
+        <p style={{color: 'rgb(225, 0, 80)', fontWeight: 'bold'}}>Don't forget mnemonic!</p>
+        <pre style={{background: '#eeeeee', padding: '20px'}}>{mnemonic}</pre>
+      </div>
+    );
   }
 
   render() {
+    const { account } = this.props;
+    const mnemonic = idx(account, (_: FormState) => _.values[this.mnemonicName]);
     return (
       <div style={{ padding: 80 }}>
         {/* tslint:disable-next-line:no-magic-numbers */}
@@ -79,19 +120,20 @@ class CreateAccount extends React.PureComponent<
             style={{ display: 'block', width: '100%' }}
             onSubmit={this.postAccount}
           >
+            {this.renderMnemonic()}
             <ReduxField
-              label="Seed"
-              placeholder="12345"
-              name={this.seedName}
+              label="Mnemonic"
+              placeholder="If you don't have any mnemonic, you should click 'GENERATE MNEMONIC.'"
+              name={this.mnemonicName}
               component={Field}
             />
             <Button
               variant="contained"
               color="primary"
-              onClick={this.postAccount}
               type="submit"
+              disabled={!mnemonic}
             >
-              CREATE ADDRESS
+              CREATE ACCOUNT
             </Button>
           </form>
         </Grid>
