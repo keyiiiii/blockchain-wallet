@@ -62,10 +62,10 @@ const routes = [
   {
     path: '/tokens',
     async action(context: Context): Promise<Route> {
-      const { TokensContainer } = await import('../containers/TokensContainer');
+      const { AssetsContainer } = await import('../containers/AssetsContainer');
       return {
         location: context,
-        Container: TokensContainer,
+        Container: AssetsContainer,
       };
     },
   },

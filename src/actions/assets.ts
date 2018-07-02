@@ -2,24 +2,25 @@ import { Dispatch } from 'redux';
 import { createActions } from 'redux-actions';
 import { api as constant } from '../constant';
 import { apiUrl } from '../config';
-import { Account } from './user';
 
-interface TransactionPayload {
-  seed: string;
+interface AssetsPayload {
   from: string;
-  to: string;
-  value: string;
+  seed: string;
+  name: string;
+  description: string;
+  total: number;
+  decimals: number;
 }
 
-export const { createTransaction } = createActions({
-  [constant.CREATE_TRANSACTION]: (res: any) => ({
+export const { createAssets } = createActions({
+  [constant.CREATE_ASSETS]: (res: any) => ({
     transaction: res,
   }),
 });
 
-export function postTransaction(body: TransactionPayload) {
+export function postAssets(body: AssetsPayload) {
   return (dispatch: Dispatch<any>) => {
-    fetch(`${apiUrl}/transaction`, {
+    fetch(`${apiUrl}/assets/issue`, {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
@@ -27,12 +28,12 @@ export function postTransaction(body: TransactionPayload) {
       body: JSON.stringify({ ...body }),
     })
       .then((result: any) => result.json())
-      .then((transaction: Account) => {
-        dispatch(createTransaction(transaction));
+      .then((assets: Account) => {
+        dispatch(createAssets(assets));
       })
       .catch((err: Error) => {
         console.error(err);
-        alert('error: 残高が足りません');
+        alert('error: token 発行に失敗しました');
       });
   };
 }

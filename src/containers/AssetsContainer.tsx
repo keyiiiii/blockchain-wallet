@@ -2,43 +2,52 @@ import * as React from 'react';
 import { connect } from 'react-redux';
 import { Dispatch } from 'redux';
 import { Button, Grid } from '@material-ui/core';
-import {
-  Field as ReduxField,
-  reduxForm,
-  InjectedFormProps,
-} from 'redux-form';
+import { Field as ReduxField, reduxForm, InjectedFormProps } from 'redux-form';
 import { FormStateMap, FormState } from 'redux-form/lib/reducer';
 import { Props as RouteProps } from '../services/router';
 import { Field } from '../components/ui/Form/Field';
 import { UserState } from '../reducers/user';
 import idx from 'idx';
-import { history } from "../router/history";
+import { history } from '../router/history';
+import { postAssets } from '../actions/assets';
+import { getBalance } from '../actions/user';
+import { AssetsState } from '../reducers/assets';
 
 interface Props extends RouteProps {
   dispatch: Dispatch<any>;
-  tokens: any; // TODO: import action types
+  assets: any; // TODO: import action types
   address: string;
   balance: number;
+  token: string;
+  transaction: any;
 }
 
 interface State {
   form: FormStateMap;
   user: UserState;
   isDisabled: boolean;
+  assets: AssetsState;
 }
 
-function getTokensInfo(tokens: any, self: any) {
-  const assetName = idx(tokens, (_: FormState) => _.values[self.assetName]);
-  const description = idx(tokens, (_: FormState) => _.values[self.assetDescriptionName]);
-  const total = idx(tokens, (_: FormState) => _.values[self.assetTotalName]);
-  const decimals = idx(tokens, (_: FormState) => _.values[self.assetDecimalsName]);
-  return { assetName, description, total, decimals };
+function getAssetsInfo(assets: any, self: any) {
+  const name = idx(assets, (_: FormState) => _.values[self.assetName]);
+  const description = idx(
+    assets,
+    (_: FormState) => _.values[self.assetDescriptionName],
+  );
+  const total = Number(
+    idx(assets, (_: FormState) => _.values[self.assetTotalName]),
+  );
+  const decimals = Number(
+    idx(assets, (_: FormState) => _.values[self.assetDecimalsName]),
+  );
+  return { name, description, total, decimals };
 }
 
-class CreateTokens extends React.PureComponent<
+class CreateAssets extends React.PureComponent<
   Props & InjectedFormProps<{}, Props>,
   {}
->  {
+> {
   private assetName = 'assetName';
   private assetDescriptionName = 'description';
   private assetTotalName = 'total';
@@ -49,34 +58,47 @@ class CreateTokens extends React.PureComponent<
   };
 
   componentWillMount() {
-    const { address } = this.props;
+    const { address, dispatch } = this.props;
     // TODO: ルータ側で判定する
     // TODO: 存在する address かどうかを確認する(要 blockchain 変更)
     if (!address) {
       history.push('/');
     }
+    dispatch(getBalance(address));
   }
 
   componentDidMount() {
-    this.generateTokens = this.generateTokens.bind(this);
+    this.postAssets = this.postAssets.bind(this);
   }
 
   componentWillReceiveProps(nextProps: Props) {
-    const { tokens, balance } = nextProps;
-    const form = getTokensInfo(tokens, this);
-    if (form.assetName && form.description && form.total && form.decimals && balance) {
+    const { assets, balance } = nextProps;
+    const form = getAssetsInfo(assets, this);
+    if (
+      form.name &&
+      form.description &&
+      form.total &&
+      form.decimals &&
+      balance
+    ) {
       this.setState({
         isEnabled: true,
       });
     }
+
+    const nextBlockIndex = idx(nextProps.transaction, (_: any) => _.index);
+    const blockIndex = idx(this.props.transaction, (_: any) => _.index);
+    if (nextBlockIndex !== blockIndex) {
+      confirm('tokenを発行しました');
+    }
   }
 
-  generateTokens(e: React.SyntheticEvent<{}>) {
+  postAssets(e: React.SyntheticEvent<{}>) {
     e.preventDefault();
-    const { tokens } = this.props;
+    const { assets, dispatch, address, token } = this.props;
 
-    const form = getTokensInfo(tokens, this);
-    console.warn('form', form);
+    const form = getAssetsInfo(assets, this);
+    dispatch(postAssets({ from: address, seed: token, ...form }));
   }
 
   render() {
@@ -90,7 +112,7 @@ class CreateTokens extends React.PureComponent<
             noValidate
             autoComplete="off"
             style={{ display: 'block', width: '100%' }}
-            onSubmit={this.generateTokens}
+            onSubmit={this.postAssets}
           >
             <ReduxField
               label="Name of your asset"
@@ -139,17 +161,19 @@ class CreateTokens extends React.PureComponent<
 
 const mapStateToProps = (state: State) => {
   const {
-    form: { tokens },
+    form: { assets },
     user: {
       account: { address },
       balance,
+      token,
     },
+    assets: { transaction },
   } = state;
-  return { tokens, address, balance };
+  return { assets, address, balance, token, transaction };
 };
 
-const tokensContainer = connect(mapStateToProps)(CreateTokens);
+const assetsContainer = connect(mapStateToProps)(CreateAssets);
 
-export const TokensContainer = reduxForm({
-  form: 'tokens',
-})(tokensContainer);
+export const AssetsContainer = reduxForm({
+  form: 'assets',
+})(assetsContainer);
