@@ -38,9 +38,11 @@ function getAssetsInfo(assets: any, self: any) {
   const total = Number(
     idx(assets, (_: FormState) => _.values[self.assetTotalName]),
   );
-  const decimals = Number(
-    idx(assets, (_: FormState) => _.values[self.assetDecimalsName]),
-  );
+  // TODO:
+  // const decimals = Number(
+  //   idx(assets, (_: FormState) => _.values[self.assetDecimalsName]),
+  // );
+  const decimals = 0;
   return { name, description, total, decimals };
 }
 
@@ -78,8 +80,8 @@ class CreateAssets extends React.PureComponent<
     if (
       form.name &&
       form.description &&
-      form.total &&
-      !isNaN(form.decimals)
+      form.total
+      // !isNaN(form.decimals) TODO
     ) {
       this.setState({
         isEnabled: true,
@@ -137,11 +139,12 @@ class CreateAssets extends React.PureComponent<
             />
             <ReduxField
               label="Decimals"
-              placeholder="From 0 to 8"
+              // placeholder="From 0 to 8"
+              placeholder="0"
               name={this.assetDecimalsName}
               component={Field}
               type="number"
-              required
+              disabled
             />
             <Button
               variant="contained"
