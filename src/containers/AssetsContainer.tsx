@@ -79,7 +79,7 @@ class CreateAssets extends React.PureComponent<
       form.name &&
       form.description &&
       form.total &&
-      form.decimals
+      !isNaN(form.decimals)
     ) {
       this.setState({
         isEnabled: true,
