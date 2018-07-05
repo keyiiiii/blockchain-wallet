@@ -10,6 +10,9 @@ import { Transfer } from '../components/ui/modules/Transfer';
 import { Balance } from '../components/ui/modules/Balance';
 import { TransactionState } from '../reducers/transaction';
 import { Address } from '../components/ui/modules/Address';
+import { AssetsList } from '../components/ui/modules/AssetsList';
+import { Assets, getAssets } from '../actions/assets';
+import { AssetsState } from '../reducers/assets';
 
 interface Props extends RouteProps {
   dispatch: Dispatch<any>;
@@ -17,11 +20,13 @@ interface Props extends RouteProps {
   balance: number;
   token: string;
   transaction: any;
+  assets: Assets;
 }
 
 interface State {
   user: UserState;
   transaction: TransactionState;
+  assets: AssetsState;
 }
 
 class CreateWallet extends React.PureComponent<Props, {}> {
@@ -34,6 +39,7 @@ class CreateWallet extends React.PureComponent<Props, {}> {
     }
 
     dispatch(getBalance(address));
+    dispatch(getAssets(address));
   }
 
   componentWillReceiveProps(nextProps: Props) {
@@ -47,10 +53,11 @@ class CreateWallet extends React.PureComponent<Props, {}> {
   }
 
   render() {
-    const { balance, address, token } = this.props;
+    const { balance, address, token, assets } = this.props;
     return (
       <div>
         <Address address={address} />
+        <AssetsList assets={assets} />
         <Balance balance={balance} />
         <Transfer address={address} token={token} />
       </div>
@@ -66,8 +73,9 @@ const mapStateToProps = (state: State) => {
       token,
     },
     transaction: { transaction },
+    assets: { assets },
   } = state;
-  return { address, balance, token, transaction };
+  return { address, balance, token, transaction, assets };
 };
 
 export const WalletContainer = connect(mapStateToProps)(CreateWallet);

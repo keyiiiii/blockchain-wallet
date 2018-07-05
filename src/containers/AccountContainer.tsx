@@ -69,13 +69,15 @@ class CreateAccount extends React.PureComponent<
   postAccount(e: React.SyntheticEvent<{}>) {
     e.preventDefault();
     const { account, dispatch } = this.props;
-    const mnemonic = idx(account, (_: FormState) => _.values[this.mnemonicName]);
+    const mnemonic = idx(
+      account,
+      (_: FormState) => _.values[this.mnemonicName],
+    );
 
     if (mnemonic) {
       const seed = mnemonicToSeedHex(mnemonic);
       dispatch(postAccount(seed));
     }
-
   }
 
   generateMnemonic() {
@@ -96,19 +98,24 @@ class CreateAccount extends React.PureComponent<
         >
           GENERATE MNEMONIC
         </Button>
-      )
+      );
     }
     return (
       <div>
-        <p style={{color: 'rgb(225, 0, 80)', fontWeight: 'bold'}}>Don't forget mnemonic!</p>
-        <pre style={{background: '#eeeeee', padding: '20px'}}>{mnemonic}</pre>
+        <p style={{ color: 'rgb(225, 0, 80)', fontWeight: 'bold' }}>
+          Don't forget mnemonic!
+        </p>
+        <pre style={{ background: '#eeeeee', padding: '20px' }}>{mnemonic}</pre>
       </div>
     );
   }
 
   render() {
     const { account } = this.props;
-    const mnemonic = idx(account, (_: FormState) => _.values[this.mnemonicName]);
+    const mnemonic = idx(
+      account,
+      (_: FormState) => _.values[this.mnemonicName],
+    );
     return (
       <div style={{ padding: 80 }}>
         {/* tslint:disable-next-line:no-magic-numbers */}

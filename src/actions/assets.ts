@@ -12,13 +12,15 @@ interface AssetsPayload {
   decimals: number;
 }
 
-export interface Assets {
+export interface Asset {
   id: string;
   name: string;
   description: string;
   total: number;
   decimals: number;
 }
+
+export type Assets = Asset[];
 
 export const { createAssets, readAssets } = createActions({
   [constant.CREATE_ASSETS]: (res: any) => ({
