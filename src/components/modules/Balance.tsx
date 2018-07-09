@@ -6,7 +6,7 @@ interface Props {
 
 export const Balance: React.SFC<Props> = ({ balance }) => (
   <div style={{ padding: 40 }}>
-    <h2>Account Balance</h2>
+    <h3>Account Balance</h3>
     <div>{balance} token</div>
   </div>
 );

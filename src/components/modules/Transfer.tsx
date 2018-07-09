@@ -52,7 +52,7 @@ class CreateTransfer extends React.PureComponent<
   render() {
     return (
       <div style={{ padding: 40 }}>
-        <h2>Token Transfer</h2>
+        <h3>Token Transfer</h3>
         <form
           noValidate
           autoComplete="off"
