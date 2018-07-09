@@ -2,8 +2,8 @@ import * as React from 'react';
 import { AppBar, Tabs, Tab } from '@material-ui/core';
 import { Dispatch } from 'redux';
 import { connect } from 'react-redux';
-import { Context } from '../../../services/router';
-import { history } from '../../../router/history';
+import { Context } from '../../services/router';
+import { history } from '../../router/history';
 
 interface Props {
   dispatch: Dispatch<any>;

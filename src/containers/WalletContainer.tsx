@@ -6,11 +6,12 @@ import { Dispatch } from 'redux';
 import { UserState } from '../reducers/user';
 import { Props as RouteProps } from '../services/router';
 import { getBalance } from '../actions/user';
-import { Transfer } from '../components/ui/modules/Transfer';
-import { Balance } from '../components/ui/modules/Balance';
+import { Transfer } from '../components/modules/Transfer';
+import { Balance } from '../components/modules/Balance';
 import { TransactionState } from '../reducers/transaction';
-import { Address } from '../components/ui/modules/Address';
-import { AssetsList } from '../components/ui/modules/AssetsList';
+import { Address } from '../components/modules/Address';
+import { AssetsList } from '../components/modules/AssetsList';
+import { AssetsSelect } from '../components/modules/AssetsSelect';
 import { Assets, getAssets } from '../actions/assets';
 import { AssetsState } from '../reducers/assets';
 

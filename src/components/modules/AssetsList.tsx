@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { Assets, Asset } from '../../../actions/assets';
+import { Assets, Asset } from '../../actions/assets';
 import { List, ListItem, Avatar, ListItemText } from '@material-ui/core';
 import { Chance } from 'chance';
 

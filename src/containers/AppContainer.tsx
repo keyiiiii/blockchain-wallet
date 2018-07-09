@@ -5,7 +5,7 @@ import { connect } from 'react-redux';
 import { changeRouter } from '../actions/router';
 import { history } from '../router/history';
 import { RouterState } from '../reducers/router';
-import { Header } from '../components/ui/modules/Header';
+import { Header } from '../components/modules/Header';
 
 interface Props {
   route: Route;

@@ -9,9 +9,9 @@ import {
   InjectedFormProps,
 } from 'redux-form';
 import { connect } from 'react-redux';
-import { Field } from '../Form/Field';
+import { Field } from '../ui/Form/Field';
 import { FormState, FormStateMap } from 'redux-form/lib/reducer';
-import { postTransaction } from '../../../actions/transaction';
+import { postTransaction } from '../../actions/transaction';
 
 interface SyncErrors {
   syncErrors?: FormErrors<FormData>;
