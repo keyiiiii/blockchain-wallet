@@ -14,6 +14,12 @@ import { AssetsList } from '../components/modules/AssetsList';
 import { AssetsSelect } from '../components/modules/AssetsSelect';
 import { Assets, getAssets } from '../actions/assets';
 import { AssetsState } from '../reducers/assets';
+import { FormState, FormStateMap } from 'redux-form/lib/reducer';
+import { FormErrors } from 'redux-form';
+
+interface SyncErrors {
+  syncErrors?: FormErrors<FormData>;
+}
 
 interface Props extends RouteProps {
   dispatch: Dispatch<any>;
@@ -22,15 +28,19 @@ interface Props extends RouteProps {
   token: string;
   transaction: any;
   assets: Assets;
+  assetsSelect: FormState & SyncErrors;
 }
 
 interface State {
   user: UserState;
   transaction: TransactionState;
   assets: AssetsState;
+  form: FormStateMap;
 }
 
 class CreateWallet extends React.PureComponent<Props, {}> {
+  private assetName = 'assetName';
+
   componentWillMount() {
     const { address, dispatch } = this.props;
     // TODO: ルータ側で判定する
@@ -43,24 +53,47 @@ class CreateWallet extends React.PureComponent<Props, {}> {
     dispatch(getAssets(address));
   }
 
+  componentDidMount() {
+    this.onChangeAsset = this.onChangeAsset.bind(this);
+  }
+
   componentWillReceiveProps(nextProps: Props) {
-    const { dispatch, address } = nextProps;
+    const { dispatch, address, assetsSelect } = nextProps;
+
+    const selectedAsset = idx(
+      assetsSelect,
+      (_: FormState) => _.values[this.assetName],
+    );
     const nextBlockIndex = idx(nextProps.transaction, (_: any) => _.index);
     const blockIndex = idx(this.props.transaction, (_: any) => _.index);
     if (nextBlockIndex !== blockIndex) {
       confirm('送金しました');
-      dispatch(getBalance(address));
+      dispatch(getBalance(address, selectedAsset));
     }
   }
 
+  onChangeAsset(id: string) {
+    const { dispatch, address } = this.props;
+    dispatch(getBalance(address, id));
+  }
+
   render() {
-    const { balance, address, token, assets } = this.props;
+    const { balance, address, token, assets, assetsSelect } = this.props;
+    const selectedAsset = idx(
+      assetsSelect,
+      (_: FormState) => _.values[this.assetName],
+    );
     return (
       <div>
         <Address address={address} />
         <AssetsList assets={assets} />
+        <AssetsSelect
+          assets={assets}
+          onChangeAsset={this.onChangeAsset}
+          name={this.assetName}
+        />
         <Balance balance={balance} />
-        <Transfer address={address} token={token} />
+        <Transfer address={address} token={token} assetId={selectedAsset} />
       </div>
     );
   }
@@ -75,8 +108,9 @@ const mapStateToProps = (state: State) => {
     },
     transaction: { transaction },
     assets: { assets },
+    form: { assetsSelect },
   } = state;
-  return { address, balance, token, transaction, assets };
+  return { address, balance, token, transaction, assets, assetsSelect };
 };
 
 export const WalletContainer = connect(mapStateToProps)(CreateWallet);

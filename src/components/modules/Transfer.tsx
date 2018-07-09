@@ -22,6 +22,7 @@ interface Props {
   transfer: FormState & SyncErrors;
   token: string;
   address: string;
+  assetId: string;
 }
 
 interface State {
@@ -41,12 +42,18 @@ class CreateTransfer extends React.PureComponent<
 
   postTransaction(e: React.SyntheticEvent<{}>) {
     e.preventDefault();
-    const { token: seed, address: from, transfer, dispatch } = this.props;
+    const {
+      token: seed,
+      address: from,
+      transfer,
+      dispatch,
+      assetId,
+    } = this.props;
 
     const to = idx(transfer, (_: FormState) => _.values[this.toName]);
     const value = idx(transfer, (_: FormState) => _.values[this.valueName]);
 
-    dispatch(postTransaction({ seed, from, to, value }));
+    dispatch(postTransaction({ seed, from, to, value, assetId }));
   }
 
   render() {

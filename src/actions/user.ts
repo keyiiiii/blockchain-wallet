@@ -48,9 +48,10 @@ export function postAccount(seed: string) {
   };
 }
 
-export function getBalance(address: string) {
+export function getBalance(address: string, id?: string) {
   return (dispatch: Dispatch<any>) => {
-    fetch(`${apiUrl}/balance/${address}`, {
+    const query = id ? `?assetId=${id}` : '';
+    fetch(`${apiUrl}/balance/${address}${query}`, {
       method: 'GET',
       headers: {
         'Content-Type': 'application/json',

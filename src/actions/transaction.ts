@@ -9,6 +9,7 @@ interface TransactionPayload {
   from: string;
   to: string;
   value: string;
+  assetId?: string;
 }
 
 export const { createTransaction } = createActions({
