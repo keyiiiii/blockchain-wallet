@@ -11,6 +11,7 @@ interface TransactionPayload {
   to: string;
   value: string;
   assetId?: string;
+  message?: string;
 }
 
 export const { createTransaction } = createActions({

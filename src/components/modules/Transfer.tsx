@@ -35,6 +35,7 @@ class CreateTransfer extends React.PureComponent<
 > {
   private toName = 'to';
   private valueName = 'value';
+  private messageName = 'message';
 
   componentDidMount() {
     this.postTransaction = this.postTransaction.bind(this);
@@ -52,8 +53,9 @@ class CreateTransfer extends React.PureComponent<
 
     const to = idx(transfer, (_: FormState) => _.values[this.toName]);
     const value = idx(transfer, (_: FormState) => _.values[this.valueName]);
+    const message = idx(transfer, (_: FormState) => _.values[this.messageName]);
 
-    dispatch(postTransaction({ seed, from, to, value, assetId }));
+    dispatch(postTransaction({ seed, from, to, value, assetId, message }));
   }
 
   render() {
@@ -76,6 +78,12 @@ class CreateTransfer extends React.PureComponent<
             label="Value"
             placeholder="100"
             name={this.valueName}
+            component={Field}
+          />
+          <ReduxField
+            label="Message"
+            placeholder="text"
+            name={this.messageName}
             component={Field}
           />
           <Button
