@@ -3,6 +3,7 @@ import { createActions } from 'redux-actions';
 import { api as constant } from '../constant';
 import { apiUrl } from '../config';
 import { Account } from './user';
+import { apiClient } from '../services/apiClient';
 
 interface TransactionPayload {
   seed: string;
@@ -20,20 +21,22 @@ export const { createTransaction } = createActions({
 
 export function postTransaction(body: TransactionPayload) {
   return (dispatch: Dispatch<any>) => {
-    fetch(`${apiUrl}/transaction`, {
+    apiClient(`${apiUrl}/transaction`, {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
       },
       body: JSON.stringify({ ...body }),
     })
-      .then((result: any) => result.json())
       .then((transaction: Account) => {
         dispatch(createTransaction(transaction));
       })
       .catch((err: Error) => {
-        console.error(err);
-        alert('error: 残高が足りません');
+        if (err.message === '400') {
+          alert('error: 送金先を確認してください');
+        } else {
+          alert('error: 残高が足りません');
+        }
       });
   };
 }

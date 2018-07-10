@@ -2,6 +2,7 @@ import { Dispatch } from 'redux';
 import { createActions } from 'redux-actions';
 import { api as constant } from '../constant';
 import { apiUrl } from '../config';
+import { apiClient } from '../services/apiClient';
 
 export const { readChain } = createActions({
   [constant.READ_CHAIN]: (res: any) => ({
@@ -11,13 +12,12 @@ export const { readChain } = createActions({
 
 export function getChain() {
   return (dispatch: Dispatch<any>) => {
-    fetch(`${apiUrl}/chain`, {
+    apiClient(`${apiUrl}/chain`, {
       method: 'GET',
       headers: {
         'Content-Type': 'application/json',
       },
     })
-      .then((result: any) => result.json())
       .then((blockchain: any) => {
         dispatch(readChain(blockchain));
       })

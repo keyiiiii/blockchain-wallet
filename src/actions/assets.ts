@@ -2,6 +2,7 @@ import { Dispatch } from 'redux';
 import { createActions } from 'redux-actions';
 import { api as constant } from '../constant';
 import { apiUrl } from '../config';
+import { apiClient } from '../services/apiClient';
 
 interface AssetsPayload {
   from: string;
@@ -33,14 +34,13 @@ export const { createAssets, readAssets } = createActions({
 
 export function postAssets(body: AssetsPayload) {
   return (dispatch: Dispatch<any>) => {
-    fetch(`${apiUrl}/assets/issue`, {
+    apiClient(`${apiUrl}/assets/issue`, {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
       },
       body: JSON.stringify({ ...body }),
     })
-      .then((result: any) => result.json())
       .then((assets: Account) => {
         dispatch(createAssets(assets));
       })
@@ -53,13 +53,12 @@ export function postAssets(body: AssetsPayload) {
 
 export function getAssets(address: string) {
   return (dispatch: Dispatch<any>) => {
-    fetch(`${apiUrl}/assets/list/${address}`, {
+    apiClient(`${apiUrl}/assets/list/${address}`, {
       method: 'GET',
       headers: {
         'Content-Type': 'application/json',
       },
     })
-      .then((result: any) => result.json())
       .then((assets: Assets) => {
         dispatch(readAssets(assets));
       })

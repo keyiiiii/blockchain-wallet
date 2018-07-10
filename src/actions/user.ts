@@ -3,6 +3,7 @@ import { createActions } from 'redux-actions';
 import { api as constant, storageKeys } from '../constant';
 import { localData } from '../utils/storage';
 import { apiUrl } from '../config';
+import { apiClient } from '../services/apiClient';
 
 export interface Account {
   address: string;
@@ -29,14 +30,13 @@ function setToken2LocalData(token: string, account: Account): void {
 
 export function postAccount(seed: string) {
   return (dispatch: Dispatch<any>) => {
-    fetch(`${apiUrl}/account`, {
+    apiClient(`${apiUrl}/account`, {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
       },
       body: JSON.stringify({ seed }),
     })
-      .then((result: any) => result.json())
       .then((account: Account) => {
         setToken2LocalData(seed, account);
         dispatch(readToken(seed));
@@ -51,13 +51,12 @@ export function postAccount(seed: string) {
 export function getBalance(address: string, id?: string) {
   return (dispatch: Dispatch<any>) => {
     const query = id ? `?assetId=${id}` : '';
-    fetch(`${apiUrl}/balance/${address}${query}`, {
+    apiClient(`${apiUrl}/balance/${address}${query}`, {
       method: 'GET',
       headers: {
         'Content-Type': 'application/json',
       },
     })
-      .then((result: any) => result.json())
       .then((balance: { balance: string }) => {
         dispatch(readBalance(balance.balance));
       })
