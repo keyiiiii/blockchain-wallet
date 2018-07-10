@@ -10,3 +10,6 @@ cf. [blockchain](https://github.com/keyiiiii/blockchain)
 
 ## Block Explorer
 ![blockexproler](https://raw.githubusercontent.com/keyiiiii/blockchain-wallet/master/assets/readme/3.gif)
+
+## Token Generation
+![blockexproler](https://raw.githubusercontent.com/keyiiiii/blockchain-wallet/master/assets/readme/4.gif)
