@@ -1,15 +1,16 @@
 import * as React from 'react';
 import { connect } from 'react-redux';
 import { Dispatch } from 'redux';
-import { Button, Grid } from '@material-ui/core';
+import { Button, Grid, FormControlLabel } from '@material-ui/core';
 import { Field as ReduxField, reduxForm, InjectedFormProps } from 'redux-form';
 import { FormStateMap, FormState } from 'redux-form/lib/reducer';
 import { Props as RouteProps } from '../services/router';
 import { Field } from '../components/ui/Form/Field';
+import { Checkbox } from '../components/ui/Form/Checkbox';
 import { UserState } from '../reducers/user';
 import idx from 'idx';
 import { history } from '../router/history';
-import { postAssets, Assets } from '../actions/assets';
+import { postAssets, Assets, AssetsForm } from '../actions/assets';
 import { getBalance } from '../actions/user';
 import { AssetsState } from '../reducers/assets';
 
@@ -29,7 +30,7 @@ interface State {
   assets: AssetsState;
 }
 
-function getAssetsInfo(assets: Assets, self: any) {
+function getAssetsInfo(assets: Assets, self: any): AssetsForm {
   const name = idx(assets, (_: FormState) => _.values[self.assetName]);
   const description = idx(
     assets,
@@ -43,7 +44,12 @@ function getAssetsInfo(assets: Assets, self: any) {
   //   idx(assets, (_: FormState) => _.values[self.assetDecimalsName]),
   // );
   const decimals = 0;
-  return { name, description, total, decimals };
+  const transferable = idx(
+    assets,
+    (_: FormState) => _.values[self.assetTransferableName],
+  );
+
+  return { name, description, total, decimals, optional: { transferable } };
 }
 
 class CreateAssets extends React.PureComponent<
@@ -54,6 +60,7 @@ class CreateAssets extends React.PureComponent<
   private assetDescriptionName = 'description';
   private assetTotalName = 'total';
   private assetDecimalsName = 'decimals';
+  private assetTransferableName = 'transferable';
 
   state = {
     isEnabled: false,
@@ -146,11 +153,22 @@ class CreateAssets extends React.PureComponent<
               type="number"
               disabled
             />
+            <FormControlLabel
+              control={
+                <ReduxField
+                  name={this.assetTransferableName}
+                  component={Checkbox}
+                  type="checkbox"
+                />
+              }
+              label="Transferable"
+            />
             <Button
               variant="contained"
               color="primary"
               type="submit"
               disabled={!isEnabled}
+              style={{ display: 'block' }}
             >
               GENERATE
             </Button>

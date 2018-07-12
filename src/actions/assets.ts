@@ -4,13 +4,21 @@ import { api as constant } from '../constant';
 import { apiUrl } from '../config';
 import { apiClient } from '../services/apiClient';
 
-interface AssetsPayload {
-  from: string;
-  seed: string;
+interface Optional {
+  transferable?: boolean;
+}
+
+export interface AssetsForm {
   name: string;
   description: string;
   total: number;
   decimals: number;
+  optional: Optional;
+}
+
+interface AssetsPayload extends AssetsForm{
+  from: string;
+  seed: string;
 }
 
 export interface Asset {
