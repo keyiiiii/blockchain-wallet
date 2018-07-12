@@ -35,6 +35,8 @@ export function postTransaction(body: TransactionPayload) {
       .catch((err: Error) => {
         if (err.message === '400') {
           alert('error: 送金先を確認してください');
+        } else if (err.message === '405') {
+          alert('error: 譲渡許可が制限されたトークンです');
         } else {
           alert('error: 残高が足りません');
         }
