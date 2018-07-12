@@ -196,4 +196,5 @@ const assetsContainer = connect(mapStateToProps)(CreateAssets);
 
 export const AssetsContainer = reduxForm({
   form: 'assets',
+  initialValues: { transferable: true },
 })(assetsContainer);
