@@ -16,7 +16,7 @@ export interface AssetsForm {
   optional: Optional;
 }
 
-interface AssetsPayload extends AssetsForm{
+interface AssetsPayload extends AssetsForm {
   from: string;
   seed: string;
 }

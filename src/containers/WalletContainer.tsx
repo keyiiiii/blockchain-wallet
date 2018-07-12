@@ -83,10 +83,9 @@ class CreateWallet extends React.PureComponent<Props, {}> {
 
   render() {
     const { balance, address, token, assets, assetsSelect } = this.props;
-    const selectedAsset = idx(
-      assetsSelect,
-      (_: FormState) => _.values[this.assetName],
-    ) || idx(assets, (_: Assets) => _[0].id);
+    const selectedAssetId =
+      idx(assetsSelect, (_: FormState) => _.values[this.assetName]) ||
+      idx(assets, (_: Assets) => _[0].id);
 
     return (
       <div>
@@ -98,7 +97,7 @@ class CreateWallet extends React.PureComponent<Props, {}> {
           name={this.assetName}
         />
         <Balance balance={balance} />
-        <Transfer address={address} token={token} assetId={selectedAsset} />
+        <Transfer address={address} token={token} assetId={selectedAssetId} />
       </div>
     );
   }
