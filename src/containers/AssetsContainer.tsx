@@ -9,13 +9,13 @@ import { Field } from '../components/ui/Form/Field';
 import { UserState } from '../reducers/user';
 import idx from 'idx';
 import { history } from '../router/history';
-import { postAssets } from '../actions/assets';
+import { postAssets, Assets } from '../actions/assets';
 import { getBalance } from '../actions/user';
 import { AssetsState } from '../reducers/assets';
 
 interface Props extends RouteProps {
   dispatch: Dispatch<any>;
-  assets: any; // TODO: import action types
+  assets: Assets;
   address: string;
   balance: number;
   token: string;
@@ -29,7 +29,7 @@ interface State {
   assets: AssetsState;
 }
 
-function getAssetsInfo(assets: any, self: any) {
+function getAssetsInfo(assets: Assets, self: any) {
   const name = idx(assets, (_: FormState) => _.values[self.assetName]);
   const description = idx(
     assets,
