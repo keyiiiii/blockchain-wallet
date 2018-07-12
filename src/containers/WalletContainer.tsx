@@ -49,7 +49,6 @@ class CreateWallet extends React.PureComponent<Props, {}> {
       history.push('/');
     }
 
-    dispatch(getBalance(address));
     dispatch(getAssets(address));
   }
 
@@ -58,7 +57,7 @@ class CreateWallet extends React.PureComponent<Props, {}> {
   }
 
   componentWillReceiveProps(nextProps: Props) {
-    const { dispatch, address, assetsSelect } = nextProps;
+    const { dispatch, address, assetsSelect, assets } = nextProps;
 
     const selectedAsset = idx(
       assetsSelect,
@@ -69,6 +68,11 @@ class CreateWallet extends React.PureComponent<Props, {}> {
     if (nextBlockIndex !== blockIndex) {
       confirm('送金しました');
       dispatch(getBalance(address, selectedAsset));
+    }
+
+    // 初期表示での balance の取得
+    if (this.props.assets !== assets && assets.length) {
+      dispatch(getBalance(address, assets[0].id));
     }
   }
 
@@ -82,7 +86,8 @@ class CreateWallet extends React.PureComponent<Props, {}> {
     const selectedAsset = idx(
       assetsSelect,
       (_: FormState) => _.values[this.assetName],
-    );
+    ) || idx(assets, (_: Assets) => _[0].id);
+
     return (
       <div>
         <Address address={address} />
