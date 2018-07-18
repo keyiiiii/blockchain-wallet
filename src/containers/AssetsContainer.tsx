@@ -101,7 +101,13 @@ class CreateAssets extends React.PureComponent<
     );
     const levy = idx(assets, (_: FormState) => _.values[this.assetLevyName]);
 
-    return { name, description, total, decimals, optional: { transferable, levy } };
+    return {
+      name,
+      description,
+      total,
+      decimals,
+      optional: { transferable, levy },
+    };
   }
 
   postAssets(e: React.SyntheticEvent<{}>) {
