@@ -161,26 +161,28 @@ class CreateAssets extends React.PureComponent<
               type="number"
               disabled
             />
-            <FormControlLabel
-              control={
-                <ReduxField
-                  name={this.assetTransferableName}
-                  component={Checkbox}
-                  type="checkbox"
-                />
-              }
-              label="Transferable"
-            />
-            <FormControlLabel
-              control={
-                <ReduxField
-                  name={this.assetLevyName}
-                  component={Checkbox}
-                  type="checkbox"
-                />
-              }
-              label="Requires levy"
-            />
+            <div>
+              <FormControlLabel
+                control={
+                  <ReduxField
+                    name={this.assetTransferableName}
+                    component={Checkbox}
+                    type="checkbox"
+                  />
+                }
+                label="Transferable"
+              />
+              <FormControlLabel
+                control={
+                  <ReduxField
+                    name={this.assetLevyName}
+                    component={Checkbox}
+                    type="checkbox"
+                  />
+                }
+                label="Requires levy (5% levy)"
+              />
+            </div>
             <Button
               variant="contained"
               color="primary"
