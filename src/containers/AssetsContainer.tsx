@@ -30,28 +30,6 @@ interface State {
   assets: AssetsState;
 }
 
-function getAssetsInfo(assets: Assets, self: any): AssetsForm {
-  const name = idx(assets, (_: FormState) => _.values[self.assetName]);
-  const description = idx(
-    assets,
-    (_: FormState) => _.values[self.assetDescriptionName],
-  );
-  const total = Number(
-    idx(assets, (_: FormState) => _.values[self.assetTotalName]),
-  );
-  // TODO:
-  // const decimals = Number(
-  //   idx(assets, (_: FormState) => _.values[self.assetDecimalsName]),
-  // );
-  const decimals = 0;
-  const transferable = idx(
-    assets,
-    (_: FormState) => _.values[self.assetTransferableName],
-  );
-
-  return { name, description, total, decimals, optional: { transferable } };
-}
-
 class CreateAssets extends React.PureComponent<
   Props & InjectedFormProps<{}, Props>,
   {}
@@ -82,7 +60,7 @@ class CreateAssets extends React.PureComponent<
 
   componentWillReceiveProps(nextProps: Props) {
     const { assets } = nextProps;
-    const form = getAssetsInfo(assets, this);
+    const form = this.getAssetsInfo(assets);
     // TODO: Fee 1 Token
     if (
       form.name &&
@@ -102,11 +80,33 @@ class CreateAssets extends React.PureComponent<
     }
   }
 
+  getAssetsInfo(assets: Assets): AssetsForm {
+    const name = idx(assets, (_: FormState) => _.values[this.assetName]);
+    const description = idx(
+      assets,
+      (_: FormState) => _.values[this.assetDescriptionName],
+    );
+    const total = Number(
+      idx(assets, (_: FormState) => _.values[this.assetTotalName]),
+    );
+    // TODO:
+    // const decimals = Number(
+    //   idx(assets, (_: FormState) => _.values[this.assetDecimalsName]),
+    // );
+    const decimals = 0;
+    const transferable = idx(
+      assets,
+      (_: FormState) => _.values[this.assetTransferableName],
+    );
+
+    return { name, description, total, decimals, optional: { transferable } };
+  }
+
   postAssets(e: React.SyntheticEvent<{}>) {
     e.preventDefault();
     const { assets, dispatch, address, token } = this.props;
 
-    const form = getAssetsInfo(assets, this);
+    const form = this.getAssetsInfo(assets);
     dispatch(postAssets({ from: address, seed: token, ...form }));
   }
 
