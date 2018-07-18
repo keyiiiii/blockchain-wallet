@@ -6,6 +6,7 @@ import { apiClient } from '../services/apiClient';
 
 interface Optional {
   transferable?: boolean;
+  levy?: boolean;
 }
 
 export interface AssetsForm {

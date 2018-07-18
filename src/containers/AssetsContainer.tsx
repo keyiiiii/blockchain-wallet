@@ -39,6 +39,7 @@ class CreateAssets extends React.PureComponent<
   private assetTotalName = 'total';
   private assetDecimalsName = 'decimals';
   private assetTransferableName = 'transferable';
+  private assetLevyName = 'levy';
 
   state = {
     isEnabled: false,
@@ -98,8 +99,9 @@ class CreateAssets extends React.PureComponent<
       assets,
       (_: FormState) => _.values[this.assetTransferableName],
     );
+    const levy = idx(assets, (_: FormState) => _.values[this.assetLevyName]);
 
-    return { name, description, total, decimals, optional: { transferable } };
+    return { name, description, total, decimals, optional: { transferable, levy } };
   }
 
   postAssets(e: React.SyntheticEvent<{}>) {
@@ -162,6 +164,16 @@ class CreateAssets extends React.PureComponent<
                 />
               }
               label="Transferable"
+            />
+            <FormControlLabel
+              control={
+                <ReduxField
+                  name={this.assetLevyName}
+                  component={Checkbox}
+                  type="checkbox"
+                />
+              }
+              label="Requires levy"
             />
             <Button
               variant="contained"
