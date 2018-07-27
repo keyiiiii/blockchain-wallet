@@ -103,14 +103,21 @@ class CreateAssets extends React.PureComponent<
       assets,
       (_: FormState) => _.values[this.assetTransferableName],
     );
-    const exTransfer = idx(assets, (_: FormState) => _.values[this.assetExtraTransferName]);
+    const exTransfer = idx(
+      assets,
+      (_: FormState) => _.values[this.assetExtraTransferName],
+    );
 
     return {
       name,
       description,
       total,
       decimals,
-      optional: { transferable, levy: exTransfer === this.levy, cashback: exTransfer === this.cashback },
+      optional: {
+        transferable,
+        levy: exTransfer === this.levy,
+        cashback: exTransfer === this.cashback,
+      },
     };
   }
 
