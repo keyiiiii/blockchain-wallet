@@ -7,6 +7,7 @@ import { FormStateMap, FormState } from 'redux-form/lib/reducer';
 import { Props as RouteProps } from '../services/router';
 import { Field } from '../components/ui/Form/Field';
 import { Checkbox } from '../components/ui/Form/Checkbox';
+import { Radio } from '../components/ui/Form/Radio';
 import { UserState } from '../reducers/user';
 import idx from 'idx';
 import { history } from '../router/history';
@@ -39,7 +40,10 @@ class CreateAssets extends React.PureComponent<
   private assetTotalName = 'total';
   private assetDecimalsName = 'decimals';
   private assetTransferableName = 'transferable';
-  private assetLevyName = 'levy';
+  private assetExtraTransferName = 'extra';
+
+  private levy = 'levy';
+  private cashback = 'cashback';
 
   state = {
     isEnabled: false,
@@ -99,14 +103,14 @@ class CreateAssets extends React.PureComponent<
       assets,
       (_: FormState) => _.values[this.assetTransferableName],
     );
-    const levy = idx(assets, (_: FormState) => _.values[this.assetLevyName]);
+    const exTransfer = idx(assets, (_: FormState) => _.values[this.assetExtraTransferName]);
 
     return {
       name,
       description,
       total,
       decimals,
-      optional: { transferable, levy },
+      optional: { transferable, levy: exTransfer === this.levy, cashback: exTransfer === this.cashback },
     };
   }
 
@@ -175,12 +179,24 @@ class CreateAssets extends React.PureComponent<
               <FormControlLabel
                 control={
                   <ReduxField
-                    name={this.assetLevyName}
-                    component={Checkbox}
-                    type="checkbox"
+                    name={this.assetExtraTransferName}
+                    component={Radio}
+                    value={this.levy}
+                    type="radio"
                   />
                 }
                 label="Requires levy (5% levy)"
+              />
+              <FormControlLabel
+                control={
+                  <ReduxField
+                    name={this.assetExtraTransferName}
+                    component={Radio}
+                    value={this.cashback}
+                    type="radio"
+                  />
+                }
+                label="Requires Cashback (3% cashback)"
               />
             </div>
             <Button

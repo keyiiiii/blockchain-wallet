@@ -7,6 +7,7 @@ import { apiClient } from '../services/apiClient';
 interface Optional {
   transferable?: boolean;
   levy?: boolean;
+  cashback?: boolean;
 }
 
 export interface AssetsForm {
