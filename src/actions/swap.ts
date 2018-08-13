@@ -16,9 +16,25 @@ interface SwapOrderPayload {
   buy: OrderAssetPayload;
 }
 
-export const { createSwapOrder } = createActions({
+interface Asset {
+  assetId: string;
+  value: number;
+}
+
+export interface Escrow {
+  escrowId: string;
+  from: string;
+  sell: Asset;
+  buy: Asset;
+  timestamp: string;
+}
+
+export const { createSwapOrder, readSwaps } = createActions({
   [constant.CREATE_SWAP_ORDER]: (res: any) => ({
     swapOrder: res,
+  }),
+  [constant.READ_SWAPS]: (swaps: Escrow[]) => ({
+    swaps,
   }),
 });
 
@@ -42,6 +58,24 @@ export function postSwapOrder(body: SwapOrderPayload) {
         } else {
           alert('error: 残高が足りません');
         }
+      });
+  };
+}
+
+export function getSwaps(address: string) {
+  return (dispatch: Dispatch<any>) => {
+    apiClient(`${apiUrl}/swap/list/${address}`, {
+      method: 'GET',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+    })
+      .then((swaps: Escrow[]) => {
+        dispatch(readSwaps(swaps));
+      })
+      .catch((err: Error) => {
+        console.error(err);
+        alert('error: swap list の取得に失敗しました');
       });
   };
 }
