@@ -13,6 +13,7 @@ interface Props {
 const WALLET = '/wallet';
 const BLOCKCHAIN = '/blockchain';
 const TOKEN_GENERATION = '/tokens';
+const DEX = '/dex';
 
 // tslint:disable:no-magic-numbers
 function getPathNumber(pathname: string): number {
@@ -21,6 +22,8 @@ function getPathNumber(pathname: string): number {
       return 1;
     case TOKEN_GENERATION:
       return 2;
+    case DEX:
+      return 3;
     default:
       return 0;
   }
@@ -55,6 +58,7 @@ class CreateHeader extends React.PureComponent<Props, {}> {
             label="token generation"
             onClick={this.customLink.bind(this, TOKEN_GENERATION)}
           />
+          <Tab label="dex" onClick={this.customLink.bind(this, DEX)} />
         </Tabs>
       </AppBar>
     );
