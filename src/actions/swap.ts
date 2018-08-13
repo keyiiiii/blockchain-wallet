@@ -52,7 +52,7 @@ export function postSwapOrder(body: SwapOrderPayload) {
       })
       .catch((err: Error) => {
         if (err.message === '400') {
-          alert('error: 送金先を確認してください');
+          alert('error: 入力を確認してください');
         } else if (err.message === '405') {
           alert('error: 譲渡許可が制限されたトークンです');
         } else {

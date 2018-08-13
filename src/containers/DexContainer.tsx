@@ -23,10 +23,11 @@ import { UserState } from '../reducers/user';
 import { getBalance } from '../actions/user';
 import { SellAsset } from '../components/modules/dex/SellAsset';
 import { BuyAsset } from '../components/modules/dex/BuyAsset';
+import { SwapList } from '../components/modules/SwapList';
 import { Field } from '../components/ui/Form/Field';
 import { ArrowForward } from '@material-ui/icons';
 import { Button } from '@material-ui/core';
-import { postSwapOrder } from '../actions/swap';
+import { getSwaps, postSwapOrder } from '../actions/swap';
 import { SwapState } from '../reducers/swap';
 
 interface SyncErrors {
@@ -44,6 +45,7 @@ interface Props extends RouteProps {
   sellAssetSelect: FormState & SyncErrors;
   buyAssetSelect: FormState & SyncErrors;
   swapOrder: FormState & SyncErrors;
+  swaps;
 }
 
 interface State {
@@ -73,6 +75,7 @@ class CreateDex extends React.PureComponent<
 
     dispatch(getAssetsList());
     dispatch(getAssets(address));
+    dispatch(getSwaps(address));
   }
 
   componentDidMount() {
@@ -162,7 +165,7 @@ class CreateDex extends React.PureComponent<
   }
 
   render() {
-    const { assets, assetsList, balance, buyAssetSelect } = this.props;
+    const { assets, assetsList, balance, buyAssetSelect, swaps } = this.props;
     const buySelectedAssetId = idx(
       buyAssetSelect,
       (_: FormState) => _.values[this.buyAssetName],
@@ -173,55 +176,58 @@ class CreateDex extends React.PureComponent<
         return asset.id === buySelectedAssetId;
       });
     return (
-      <div style={{ padding: 40 }}>
-        <h2>DEX</h2>
-        <div style={{ display: 'flex', flexDirection: 'row' }}>
-          <div
-            style={{
-              minWidth: '200px',
-            }}
-          >
-            <SellAsset
-              balance={balance}
-              assets={assets}
-              onChangeAsset={this.onChangeSellAsset}
-              name={this.sellAssetName}
-            />
-            <ReduxField
-              label="value"
-              placeholder="0"
-              component={Field}
-              name={this.sellAssetValueName}
-            />
+      <div>
+        <div style={{ padding: 40 }}>
+          <h2>DEX</h2>
+          <div style={{ display: 'flex', flexDirection: 'row' }}>
+            <div
+              style={{
+                minWidth: '200px',
+              }}
+            >
+              <SellAsset
+                balance={balance}
+                assets={assets}
+                onChangeAsset={this.onChangeSellAsset}
+                name={this.sellAssetName}
+              />
+              <ReduxField
+                label="value"
+                placeholder="0"
+                component={Field}
+                name={this.sellAssetValueName}
+              />
+            </div>
+            <ArrowForward style={{ fontSize: '50px', margin: '40px' }} />
+            <div
+              style={{
+                minWidth: '200px',
+              }}
+            >
+              <BuyAsset
+                assetDetail={assetDetail}
+                assets={assetsList}
+                onChangeAsset={this.onChangeBuyAsset}
+                name={this.buyAssetName}
+              />
+              <ReduxField
+                label="value"
+                placeholder="0"
+                component={Field}
+                name={this.buyAssetValueName}
+              />
+            </div>
           </div>
-          <ArrowForward style={{ fontSize: '50px', margin: '40px' }} />
-          <div
-            style={{
-              minWidth: '200px',
-            }}
+          <Button
+            variant="contained"
+            color="primary"
+            onClick={this.postSwapOrder}
+            type="submit"
           >
-            <BuyAsset
-              assetDetail={assetDetail}
-              assets={assetsList}
-              onChangeAsset={this.onChangeBuyAsset}
-              name={this.buyAssetName}
-            />
-            <ReduxField
-              label="value"
-              placeholder="0"
-              component={Field}
-              name={this.buyAssetValueName}
-            />
-          </div>
+            SWAP
+          </Button>
         </div>
-        <Button
-          variant="contained"
-          color="primary"
-          onClick={this.postSwapOrder}
-          type="submit"
-        >
-          SWAP
-        </Button>
+        {swaps && assetsList && <SwapList swaps={swaps} assets={assetsList} />}
       </div>
     );
   }
@@ -234,7 +240,7 @@ const mapStateToProps = (state: State) => {
       balance,
       token,
     },
-    swap: { swapOrder: transactionSwapOrder },
+    swap: { swapOrder: transactionSwapOrder, swaps },
     assets: { assetsList, assets },
     form: { sellAssetSelect, buyAssetSelect, swapOrder },
   } = state;
@@ -248,6 +254,7 @@ const mapStateToProps = (state: State) => {
     buyAssetSelect,
     swapOrder,
     transactionSwapOrder,
+    swaps,
   };
 };
 
