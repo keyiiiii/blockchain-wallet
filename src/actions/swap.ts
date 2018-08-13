@@ -1,9 +1,8 @@
 import { Dispatch } from 'redux';
 import { createActions } from 'redux-actions';
-import { api as constant } from "../constant";
-import { apiClient } from "../services/apiClient";
-import { apiUrl } from "../config";
-
+import { api as constant } from '../constant';
+import { apiClient } from '../services/apiClient';
+import { apiUrl } from '../config';
 
 interface OrderAssetPayload {
   assetId: string;

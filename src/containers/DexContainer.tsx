@@ -27,7 +27,7 @@ import { Field } from '../components/ui/Form/Field';
 import { ArrowForward } from '@material-ui/icons';
 import { Button } from '@material-ui/core';
 import { postSwapOrder } from '../actions/swap';
-import { SwapState } from "../reducers/swap";
+import { SwapState } from '../reducers/swap';
 
 interface SyncErrors {
   syncErrors?: FormErrors<FormData>;
