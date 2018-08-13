@@ -70,6 +70,16 @@ const routes = [
     },
   },
   {
+    path: '/dex',
+    async action(context: Context): Promise<Route> {
+      const { DexContainer } = await import('../containers/DexContainer');
+      return {
+        location: context,
+        Container: DexContainer,
+      };
+    },
+  },
+  {
     path: '(.*)',
     async action(context: Context): Promise<Route> {
       const {
