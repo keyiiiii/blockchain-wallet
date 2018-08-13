@@ -26,8 +26,8 @@ import { BuyAsset } from '../components/modules/dex/BuyAsset';
 import { Field } from '../components/ui/Form/Field';
 import { ArrowForward } from '@material-ui/icons';
 import { Button } from '@material-ui/core';
-import { postSwapOrder } from '../actions/transaction';
-import { TransactionState } from '../reducers/transaction';
+import { postSwapOrder } from '../actions/swap';
+import { SwapState } from "../reducers/swap";
 
 interface SyncErrors {
   syncErrors?: FormErrors<FormData>;
@@ -48,7 +48,7 @@ interface Props extends RouteProps {
 
 interface State {
   user: UserState;
-  transaction: TransactionState;
+  swap: SwapState;
   assets: AssetsState;
   form: FormStateMap;
 }
@@ -234,7 +234,7 @@ const mapStateToProps = (state: State) => {
       balance,
       token,
     },
-    transaction: { swapOrder: transactionSwapOrder },
+    swap: { swapOrder: transactionSwapOrder },
     assets: { assetsList, assets },
     form: { sellAssetSelect, buyAssetSelect, swapOrder },
   } = state;

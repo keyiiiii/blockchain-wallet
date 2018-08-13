@@ -1,36 +1,39 @@
 import { Dispatch } from 'redux';
 import { createActions } from 'redux-actions';
-import { api as constant } from '../constant';
-import { apiUrl } from '../config';
-import { Account } from './user';
-import { apiClient } from '../services/apiClient';
+import { api as constant } from "../constant";
+import { apiClient } from "../services/apiClient";
+import { apiUrl } from "../config";
 
-interface TransferPayload {
-  seed: string;
-  from: string;
-  to: string;
+
+interface OrderAssetPayload {
+  assetId: string;
   value: string;
-  assetId?: string;
-  message?: string;
 }
 
-export const { createTransaction } = createActions({
-  [constant.CREATE_TRANSACTION]: (res: any) => ({
-    transaction: res,
+interface SwapOrderPayload {
+  from: string;
+  seed: string;
+  sell: OrderAssetPayload;
+  buy: OrderAssetPayload;
+}
+
+export const { createSwapOrder } = createActions({
+  [constant.CREATE_SWAP_ORDER]: (res: any) => ({
+    swapOrder: res,
   }),
 });
 
-export function postTransaction(body: TransferPayload) {
+export function postSwapOrder(body: SwapOrderPayload) {
   return (dispatch: Dispatch<any>) => {
-    apiClient(`${apiUrl}/transaction`, {
+    apiClient(`${apiUrl}/swap/order`, {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
       },
       body: JSON.stringify({ ...body }),
     })
-      .then((transaction: Account) => {
-        dispatch(createTransaction(transaction));
+      .then((swap: any) => {
+        dispatch(createSwapOrder(swap));
       })
       .catch((err: Error) => {
         if (err.message === '400') {

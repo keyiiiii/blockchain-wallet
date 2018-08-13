@@ -5,6 +5,7 @@ import { router } from './router';
 import { transaction } from './transaction';
 import { blockchain } from './blockchain';
 import { assets } from './assets';
+import { swap } from "./swap";
 
 export const reducers = combineReducers({
   form: formReducer,
@@ -13,4 +14,5 @@ export const reducers = combineReducers({
   transaction,
   blockchain,
   assets,
+  swap,
 });
