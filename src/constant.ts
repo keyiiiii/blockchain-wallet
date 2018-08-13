@@ -23,5 +23,8 @@ export const api = Object.freeze(
     READ_CHAIN: null,
     CREATE_ASSETS: null,
     READ_ASSETS: null,
+    READ_ASSETS_LIST: null,
+    READ_ASSET: null,
+    CREATE_SWAP_ORDER: null,
   }),
 );
