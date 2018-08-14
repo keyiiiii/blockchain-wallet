@@ -1,5 +1,11 @@
 import * as React from 'react';
-import { List, ListItem, Avatar, ListItemText, IconButton } from '@material-ui/core';
+import {
+  List,
+  ListItem,
+  Avatar,
+  ListItemText,
+  IconButton,
+} from '@material-ui/core';
 import { Delete } from '@material-ui/icons';
 import { Chance } from 'chance';
 import { Escrow } from '../../actions/swap';

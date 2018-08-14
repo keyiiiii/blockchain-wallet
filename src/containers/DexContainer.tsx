@@ -168,10 +168,12 @@ class CreateDex extends React.PureComponent<
 
   onDeleteList(escrowId: string) {
     const { dispatch, address, token } = this.props;
-    dispatch(deleteSwap(escrowId, {
-      from: address,
-      seed: token,
-    }))
+    dispatch(
+      deleteSwap(escrowId, {
+        from: address,
+        seed: token,
+      }),
+    );
   }
 
   render() {
@@ -239,7 +241,13 @@ class CreateDex extends React.PureComponent<
         </div>
         {swaps &&
           swaps.length > 0 &&
-          assetsList && <SwapList swaps={swaps} assets={assetsList} onDelete={this.onDeleteList} />}
+          assetsList && (
+            <SwapList
+              swaps={swaps}
+              assets={assetsList}
+              onDelete={this.onDeleteList}
+            />
+          )}
       </div>
     );
   }
