@@ -20,7 +20,7 @@ interface Props {
 export const SwapList: React.SFC<Props> = ({ swaps, assets, onDelete }) => {
   return (
     <div style={{ padding: 40 }}>
-      <h2>Swap list</h2>
+      <h2>Swap List</h2>
       <div
         style={{
           display: 'flex',
