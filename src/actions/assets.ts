@@ -33,12 +33,23 @@ export interface Asset {
 
 export type Assets = Asset[];
 
-export const { createAssets, readAssets } = createActions({
+export const {
+  createAssets,
+  readAssets,
+  readAssetsList,
+  readAsset,
+} = createActions({
   [constant.CREATE_ASSETS]: (res: any) => ({
     transaction: res,
   }),
   [constant.READ_ASSETS]: (res: Assets) => ({
     assets: res,
+  }),
+  [constant.READ_ASSETS_LIST]: (res: Assets) => ({
+    assetsList: res,
+  }),
+  [constant.READ_ASSET]: (res: Asset) => ({
+    asset: res,
   }),
 });
 
@@ -75,6 +86,42 @@ export function getAssets(address: string) {
       .catch((err: Error) => {
         console.error(err);
         alert('error: token の取得に失敗しました');
+      });
+  };
+}
+
+export function getAssetsList() {
+  return (dispatch: Dispatch<any>) => {
+    apiClient(`${apiUrl}/assets/list`, {
+      method: 'GET',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+    })
+      .then((assets: Assets) => {
+        dispatch(readAssetsList(assets));
+      })
+      .catch((err: Error) => {
+        console.error(err);
+        alert('error: token リストの取得に失敗しました');
+      });
+  };
+}
+
+export function getAsset(assetId: string) {
+  return (dispatch: Dispatch<any>) => {
+    apiClient(`${apiUrl}/assets/${assetId}`, {
+      method: 'GET',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+    })
+      .then((asset: Asset) => {
+        dispatch(readAsset(asset));
+      })
+      .catch((err: Error) => {
+        console.error(err);
+        alert('error: token リストの取得に失敗しました');
       });
   };
 }

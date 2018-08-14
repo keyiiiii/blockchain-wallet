@@ -5,7 +5,7 @@ import { apiUrl } from '../config';
 import { Account } from './user';
 import { apiClient } from '../services/apiClient';
 
-interface TransactionPayload {
+interface TransferPayload {
   seed: string;
   from: string;
   to: string;
@@ -20,7 +20,7 @@ export const { createTransaction } = createActions({
   }),
 });
 
-export function postTransaction(body: TransactionPayload) {
+export function postTransaction(body: TransferPayload) {
   return (dispatch: Dispatch<any>) => {
     apiClient(`${apiUrl}/transaction`, {
       method: 'POST',
