@@ -16,6 +16,11 @@ interface SwapOrderPayload {
   buy: OrderAssetPayload;
 }
 
+interface DeleteSwapPayload {
+  from: string;
+  seed: string;
+}
+
 interface Asset {
   assetId: string;
   value: number;
@@ -76,6 +81,25 @@ export function getSwaps(address: string) {
       .catch((err: Error) => {
         console.error(err);
         alert('error: swap list の取得に失敗しました');
+      });
+  };
+}
+
+export function deleteSwap(escrowId: string, body: DeleteSwapPayload) {
+  return (dispatch: Dispatch<any>) => {
+    apiClient(`${apiUrl}/swap/${escrowId}`, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({ ...body }),
+    })
+      .then((swaps: Escrow[]) => {
+        dispatch(readSwaps(swaps));
+      })
+      .catch((err: Error) => {
+        console.error(err);
+        alert('error: swap list の削除に失敗しました');
       });
   };
 }

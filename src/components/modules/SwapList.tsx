@@ -1,5 +1,6 @@
 import * as React from 'react';
-import { List, ListItem, Avatar, ListItemText } from '@material-ui/core';
+import { List, ListItem, Avatar, ListItemText, IconButton } from '@material-ui/core';
+import { Delete } from '@material-ui/icons';
 import { Chance } from 'chance';
 import { Escrow } from '../../actions/swap';
 import { Assets, Asset } from '../../actions/assets';
@@ -7,9 +8,10 @@ import { Assets, Asset } from '../../actions/assets';
 interface Props {
   swaps: Escrow[];
   assets: Assets;
+  onDelete: (escrowId: string) => void;
 }
 
-export const SwapList: React.SFC<Props> = ({ swaps, assets }) => {
+export const SwapList: React.SFC<Props> = ({ swaps, assets, onDelete }) => {
   return (
     <div style={{ padding: 40 }}>
       <h2>Swap list</h2>
@@ -48,7 +50,7 @@ export const SwapList: React.SFC<Props> = ({ swaps, assets }) => {
               />
               <p
                 style={{
-                  paddingRight: '40px',
+                  paddingRight: '20px',
                   fontWeight: 'bold',
                 }}
               >
@@ -67,12 +69,15 @@ export const SwapList: React.SFC<Props> = ({ swaps, assets }) => {
               />
               <p
                 style={{
-                  paddingRight: '40px',
+                  paddingRight: '20px',
                   fontWeight: 'bold',
                 }}
               >
                 {swap.buy.value} token
               </p>
+              <IconButton onClick={() => onDelete(swap.escrowId)}>
+                <Delete />
+              </IconButton>
             </ListItem>
           );
         })}

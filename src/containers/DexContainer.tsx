@@ -27,7 +27,7 @@ import { SwapList } from '../components/modules/SwapList';
 import { Field } from '../components/ui/Form/Field';
 import { ArrowForward } from '@material-ui/icons';
 import { Button } from '@material-ui/core';
-import { Escrow, getSwaps, postSwapOrder } from '../actions/swap';
+import { Escrow, getSwaps, postSwapOrder, deleteSwap } from '../actions/swap';
 import { SwapState } from '../reducers/swap';
 
 interface SyncErrors {
@@ -82,6 +82,7 @@ class CreateDex extends React.PureComponent<
     this.onChangeSellAsset = this.onChangeSellAsset.bind(this);
     this.onChangeBuyAsset = this.onChangeBuyAsset.bind(this);
     this.postSwapOrder = this.postSwapOrder.bind(this);
+    this.onDeleteList = this.onDeleteList.bind(this);
   }
 
   componentWillReceiveProps(nextProps: Props) {
@@ -165,6 +166,14 @@ class CreateDex extends React.PureComponent<
     );
   }
 
+  onDeleteList(escrowId: string) {
+    const { dispatch, address, token } = this.props;
+    dispatch(deleteSwap(escrowId, {
+      from: address,
+      seed: token,
+    }))
+  }
+
   render() {
     const { assets, assetsList, balance, buyAssetSelect, swaps } = this.props;
     const buySelectedAssetId = idx(
@@ -230,7 +239,7 @@ class CreateDex extends React.PureComponent<
         </div>
         {swaps &&
           swaps.length > 0 &&
-          assetsList && <SwapList swaps={swaps} assets={assetsList} />}
+          assetsList && <SwapList swaps={swaps} assets={assetsList} onDelete={this.onDeleteList} />}
       </div>
     );
   }
