@@ -27,7 +27,7 @@ import { SwapList } from '../components/modules/SwapList';
 import { Field } from '../components/ui/Form/Field';
 import { ArrowForward } from '@material-ui/icons';
 import { Button } from '@material-ui/core';
-import { getSwaps, postSwapOrder } from '../actions/swap';
+import { Escrow, getSwaps, postSwapOrder } from '../actions/swap';
 import { SwapState } from '../reducers/swap';
 
 interface SyncErrors {
@@ -45,7 +45,7 @@ interface Props extends RouteProps {
   sellAssetSelect: FormState & SyncErrors;
   buyAssetSelect: FormState & SyncErrors;
   swapOrder: FormState & SyncErrors;
-  swaps;
+  swaps: Escrow[];
 }
 
 interface State {
@@ -104,6 +104,7 @@ class CreateDex extends React.PureComponent<
       } else {
         confirm('オーダーブックを作りました');
       }
+      dispatch(getSwaps(address));
     }
   }
 
@@ -227,7 +228,9 @@ class CreateDex extends React.PureComponent<
             SWAP
           </Button>
         </div>
-        {swaps && assetsList && <SwapList swaps={swaps} assets={assetsList} />}
+        {swaps &&
+          swaps.length > 0 &&
+          assetsList && <SwapList swaps={swaps} assets={assetsList} />}
       </div>
     );
   }
