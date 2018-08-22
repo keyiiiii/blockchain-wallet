@@ -100,7 +100,7 @@ class CreateDex extends React.PureComponent<
     );
     if (nextSwapOrderIndex !== swapOrderIndex) {
       // 配列で返ってきたら SWAP 成功
-      if (transactionSwapOrder.data.length) {
+      if (transactionSwapOrder.length) {
         confirm('SWAP成功しました');
       } else {
         confirm('オーダーブックを作りました');
